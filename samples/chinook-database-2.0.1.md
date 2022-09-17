@@ -3,6 +3,11 @@
 ## Example
 
 ```mermaid
+sequenceDiagram
+  A-->B: Works!
+```
+
+```mermaid
 erDiagram
 
   artists {
