@@ -30,14 +30,14 @@ export class Parser {
     }
 
     private lexer(tokens : Array<string>): string{
+        let statementGeneration : Array<string> = [];
         for(let i = 1; i < tokens.length; i++){
             if(this.symbols.includes(tokens[i])){
                 throw `Keyword reserved '${tokens[i]}'`;
             }
-            let statementGeneration : Array<string> = [];
             const tableName = tokens[i];
             i++;
-            if(statementGeneration[i] !== "{"){
+            if(tokens[i] !== "{"){
                 throw `Expecting '{' got : '${tokens[i]}'`;
             }
             i++;
@@ -52,7 +52,7 @@ export class Parser {
             }
             statementGeneration.unshift(this.createTable(tableName));
         }
-        return this.dataDefinitions.join("");
+        return statementGeneration.join("");
     }
 
     private createTable(tableName: string,){
