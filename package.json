@@ -14,8 +14,8 @@
     "test:cli": "npm i -g && littleMermaid2SQL",
     "test": "jest",
     "lint": "eslint",
-    "build": "tsc",
     "create": "npm run build && npm run test:cli",
+    "build": "tsc",
     "build:client": "browserify src/index.ts -p [ tsify --noImplicitAny ] > dist/littleMermaid.js"
   },
   "repository": {
