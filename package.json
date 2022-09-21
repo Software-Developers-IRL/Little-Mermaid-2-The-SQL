@@ -2,15 +2,20 @@
   "name": "little-mermaid-2-the-sql",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "./lib/index.js",
   "engines": {
     "node": "16.x"
   },
+  "bin": {
+    "littleMermaid2SQL": "./lib/index.js"
+  },
   "scripts": {
     "start": "node index.mjs",
+    "test:cli": "npm i -g && littleMermaid2SQL",
     "test": "jest",
     "lint": "eslint",
     "build": "tsc",
+    "create": "npm run build && npm run test:cli",
     "build:client": "browserify src/index.ts -p [ tsify --noImplicitAny ] > dist/littleMermaid.js"
   },
   "repository": {
@@ -35,5 +40,11 @@
     "typescript": "^4.8.3",
     "browserify": "^17.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "chalk": "^4.1.0",
+    "clear": "^0.1.0",
+    "commander": "^7.1.0",
+    "figlet": "^1.5.0",
+    "path": "^0.12.7"
+  }
 }
