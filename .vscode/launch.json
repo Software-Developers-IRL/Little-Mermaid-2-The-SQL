@@ -7,6 +7,19 @@
         {
             "type": "node",
             "request": "launch",
+            "name": "Debug cli",
+            "program": "${workspaceFolder}\\src\\index.ts",
+            "preLaunchTask": "npm: build",
+            "sourceMaps": true,
+            "smartStep": true,
+            "internalConsoleOptions": "openOnSessionStart",
+            "outFiles": [
+                "${workspaceFolder}/lib/**/*.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
             "name": "Jest single run",
             "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
             "args": [
