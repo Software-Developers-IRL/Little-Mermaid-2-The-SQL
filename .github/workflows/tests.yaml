@@ -7,14 +7,8 @@ on:
       - main
   pull_request:
 
-#TODO: CAN THIS GO?
-permissions:
-  contents: read
-  # Needed for the 'trilom/file-changes-action' action
-  pull-requests: read
-
 jobs:
-  check-links:
+  tests:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
