@@ -1,0 +1,3 @@
+[submodule "deps/mermaid"]
+	path = deps/mermaid
+	url = https://github.com/mermaid-js/mermaid.git

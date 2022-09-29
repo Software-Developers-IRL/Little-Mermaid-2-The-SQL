@@ -2,7 +2,8 @@ import { info } from "console";
 import mermaid from "mermaid";
 // import { utils } from "mermaid";
 import path from "path";
-import { detectDirective } from "./mermaid/utils";
+// import { detectDirective } from "../deps/mermaid/src/utils";
+import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
 
 const m: any = mermaid;
 /**
@@ -75,26 +76,36 @@ export const GenerateSqlFromMermaid = async function (
 
       if (diagrams.length) {
         info(`Found ${diagrams.length} mermaid charts in Markdown input`);
-        await Promise.all(
-          diagrams.map(async ([imgFile, md]) => {
-            try {
-              var test = mermaid.mermaidAPI.parse(md);
-              if (!test) {
-                // not valid mermaid, console log?
-                return;
-              }
-            } catch (error) {
-              console.log(error);
+        // await Promise.all(
+        diagrams.map(async ([imgFile, md]) => {
+          try {
+            var test = mermaid.mermaidAPI.parse(md);
+            if (!test) {
+              // not valid mermaid, console log?
               return;
             }
+            var isEr = erDetector(md);
+            if (isEr) {
+              console.log("is erdiagram");
+            } else {
+              console.log("not erdiagram");
+            }
+            info(isEr);
+            console.log(isEr);
+            // var directive = detectDirective(md);
+            // console.log(directive);
+          } catch (error) {
+            console.log("error");
+            console.log(error);
+            return;
+          }
 
-            var directive = detectDirective(md);
-            var test2 = 1 + 1;
-            //   const data = await parseMMD(browser, md, outputFormat, parseMMDOptions)
-            //   await fs.promises.writeFile(imgFile, data)
-            //   info(` ✅ ${imgFile}`)
-          })
-        );
+          var test2 = 1 + 1;
+          //   const data = await parseMMD(browser, md, outputFormat, parseMMDOptions)
+          //   await fs.promises.writeFile(imgFile, data)
+          //   info(` ✅ ${imgFile}`)
+        });
+        // );
       } else {
         info("No mermaid charts found in Markdown input");
       }
