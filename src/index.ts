@@ -33,6 +33,10 @@ const options = program.opts();
 
 console.log("current options:");
 if (options.src) console.log("  - src");
+// else {
+//   console.log(`error: required option '-s, --src <string>' not specified`);
+//   process.exit(1);
+// }
 if (options.database) console.log("  - database");
 
 const database: string =

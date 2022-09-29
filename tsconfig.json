@@ -105,6 +105,7 @@
     "lib"
   ],
   "exclude": [
+    "deps",
     "node_modules",
     "**/tests/*",
     "src/*.spec.ts"
