@@ -5,7 +5,7 @@
 
 1. git clone repo
 2. run 'npm install' inside directory.
-3. `npm run littleMermaid2SQL -- -d sqlite`
+3. `npm run littleMermaid2SQL -- -d sqlite --src samples/chinook-database-2.0.1.md`
 
 
 # Technologies 
