@@ -16,8 +16,9 @@ console.log(
 program
   .version('0.0.3')
   .description("A sql generator from mermaid markdown erdDiagrams")
-  .option('-s, --src', 'Source file e.g. sample.md')
-  .option('-d, --database', 'Database format, postgres, sqlserver, mysql, sqlite')
+  .option('-c, --contents <string>', 'Raw markdown file contents #asdf')
+  .option('-s, --src <string>', 'Source file e.g. sample.md')
+  .option('-d, --database <string>', 'Database format, postgres, sqlserver, mysql, sqlite')
   .parse(process.argv);
 
 const options = program.opts();

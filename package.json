@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "node index.mjs",
+    "littleMermaid2SQL": "npm run build && littleMermaid2SQL",
     "test:cli": "npm i -g && littleMermaid2SQL",
     "test": "jest",
     "lint": "eslint",

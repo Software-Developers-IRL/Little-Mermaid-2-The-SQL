@@ -15,7 +15,8 @@
             "internalConsoleOptions": "openOnSessionStart",
             "outFiles": [
                 "${workspaceFolder}/lib/**/*.js"
-            ]
+            ],
+            "args": ["--database","sqlite"]
         },
         {
             "type": "node",
