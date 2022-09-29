@@ -1,13 +1,11 @@
 #!/usr/bin/env node
-
-const chalk = require("chalk");
-const clear = require("clear");
-const figlet = require("figlet");
-const path = require("path");
-const program = require("commander");
-const fs = require("fs");
-// import * as fs from "fs";
-
+import chalk from "chalk";
+import clear from "clear";
+import figlet from "figlet";
+import path from "path";
+import { program } from "commander";
+import * as fs from "fs";
+import { GenerateSqlFromMermaid } from "./Library";
 clear();
 console.log(
   chalk.red(
@@ -54,6 +52,11 @@ async function LoadMarkDownFile(filePath: string): Promise<string> {
   return fileContents;
 }
 
-LoadMarkDownFile(options.src).then((contents) => {
-  console.log("done");
+LoadMarkDownFile(options.src).then(async (contents) => {
+  console.log("done loading file");
+  await GenerateSqlFromMermaid(contents, options.database)
+  .then((result) => {
+      console.log(result);
+      console.log("done generating sql");
+    })
 });
