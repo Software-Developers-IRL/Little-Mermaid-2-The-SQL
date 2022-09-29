@@ -5,6 +5,7 @@
 
 1. git clone repo
 2. run 'npm install' inside directory.
+3. `npm run littleMermaid2SQL -- -d sqlite`
 
 
 # Technologies 
