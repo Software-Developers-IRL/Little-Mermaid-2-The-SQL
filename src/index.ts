@@ -5,6 +5,8 @@ const clear = require('clear');
 const figlet = require('figlet');
 const path = require('path');
 const program = require('commander');
+const fs = require('fs');
+// import * as fs from "fs";
 
 clear();
 console.log(
@@ -16,8 +18,9 @@ console.log(
 program
   .version('0.0.3')
   .description("A sql generator from mermaid markdown erdDiagrams")
-  .option('-s, --src', 'Source file e.g. sample.md')
-  .option('-d, --database', 'Database format, postgres, sqlserver, mysql, sqlite')
+  .option('-c, --contents <string>', 'Raw markdown file contents #asdf')
+  .option('-s, --src <string>', 'Source file e.g. sample.md')
+  .option('-d, --database <string>', 'Database format, postgres, sqlserver, mysql, sqlite')
   .parse(process.argv);
 
 const options = program.opts();
@@ -35,3 +38,21 @@ console.log('  - %s database', database);
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
+/**
+ * load markdown file text contents
+ * @param filePath 
+ */
+async function LoadMarkDownFile(filePath: string){
+  const file = await fs.readFileSync(filePath, 'utf8');
+  var test = 1 + 1;
+  // serialize to mermaid
+  // const contents = file.split('\n');
+  // contents.shift();
+}
+
+
+LoadMarkDownFile(options.src)
+ .then(() => {
+    console.log('done');
+  })
