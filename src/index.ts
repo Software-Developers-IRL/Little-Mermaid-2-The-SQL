@@ -5,6 +5,8 @@ const clear = require('clear');
 const figlet = require('figlet');
 const path = require('path');
 const program = require('commander');
+const fs = require('fs');
+// import * as fs from "fs";
 
 clear();
 console.log(
@@ -36,3 +38,21 @@ console.log('  - %s database', database);
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
+
+/**
+ * load markdown file text contents
+ * @param filePath 
+ */
+async function LoadMarkDownFile(filePath: string){
+  const file = await fs.readFileSync(filePath, 'utf8');
+  var test = 1 + 1;
+  // serialize to mermaid
+  // const contents = file.split('\n');
+  // contents.shift();
+}
+
+
+LoadMarkDownFile(options.src)
+ .then(() => {
+    console.log('done');
+  })
