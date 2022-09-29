@@ -7,6 +7,9 @@
 2. run 'npm install' inside directory.
 3. `npm run littleMermaid2SQL -- -d sqlite --src samples/chinook-database-2.0.1.md`
 
+## Mermaid Notes
+* utils.ts is not exposed, would a git submodule be more appropriate?
+
 
 # Technologies 
 
