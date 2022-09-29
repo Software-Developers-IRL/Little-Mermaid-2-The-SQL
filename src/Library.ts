@@ -52,7 +52,7 @@ export const GenerateSqlFromMermaid = async function (
         (mermaidMd) => {
           var regexResult = mermaidChartsInMarkdownRegex.exec(mermaidMd);
           if (regexResult != null) {
-            const md = regexResult[0];
+            const md = regexResult[1];
 
             // Output can be either a template image file, or a `.md` output file.
             //   If it is a template image file, use that to created numbered diagrams
