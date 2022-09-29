@@ -16,8 +16,13 @@ console.log(
 program
   .version("0.0.3")
   .description("A sql generator from mermaid markdown erdDiagrams")
-  .option("-c, --contents <string>", "Raw markdown file contents #asdf")
-  .option("-s, --src <string>", "Source file e.g. sample.md")
+  // .option("-c, --contents <string>", "Raw markdown file contents #asdf")
+  .requiredOption("-s, --src <string>", "Source file e.g. sample.md")
+  .option("-r, --raw", "src is raw content rather than file")
+  .option(
+    "-o, --output <string>",
+    "Output file e.g. result becomes result-1.sql"
+  )
   .option(
     "-d, --database <string>",
     "Database format, postgres, sqlserver, mysql, sqlite"
@@ -33,18 +38,47 @@ if (options.database) console.log("  - database");
 const database: string =
   undefined === options.database ? "postgres" : options.database || "no";
 
+const output: string =
+  undefined === options.database ? "result" : options.database || "result";
+
+const src: string = options.src;
+
+const isRaw = options.raw ? true : false;
+// required params, input only
+
 console.log("  - %s database", database);
 
 if (!process.argv.slice(2).length) {
   program.outputHelp();
 }
 
+interface MarkdownInputSettingsI {
+  src: string;
+  isRaw: boolean;
+}
+
+var markdownFileSettings: MarkdownInputSettingsI = {
+  src,
+  isRaw,
+};
+
 /**
  * load markdown file text contents
  * @param filePath
  */
-async function LoadMarkDownFile(filePath: string): Promise<string> {
-  const fileContents = await fs.readFileSync(filePath, "utf8");
+async function LoadMarkDownFile(
+  inputInformation: MarkdownInputSettingsI
+): Promise<string> {
+  let fileContents: string | null = null;
+  if (inputInformation.isRaw) {
+    fileContents = inputInformation.src;
+  } else {
+    var fileExists = await fs.existsSync(inputInformation.src);
+    if (!fileExists) {
+      throw new Error(`src:${inputInformation.src}, does not exist`);
+    }
+    fileContents = await fs.readFileSync(inputInformation.src, "utf8");
+  }
   var test = 1 + 1;
   // serialize to mermaid
   // const contents = file.split('\n');
@@ -52,11 +86,14 @@ async function LoadMarkDownFile(filePath: string): Promise<string> {
   return fileContents;
 }
 
-LoadMarkDownFile(options.src).then(async (contents) => {
-  console.log("done loading file");
-  await GenerateSqlFromMermaid(contents, options.database)
-  .then((result) => {
+LoadMarkDownFile(markdownFileSettings)
+  .then(async (contents) => {
+    console.log("done loading file");
+    await GenerateSqlFromMermaid(contents, options.database).then((result) => {
       console.log(result);
       console.log("done generating sql");
-    })
-});
+    });
+  })
+  .catch((error) => {
+    console.log(error);
+  });
