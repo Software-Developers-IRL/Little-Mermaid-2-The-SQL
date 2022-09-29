@@ -15,7 +15,8 @@
             "internalConsoleOptions": "openOnSessionStart",
             "outFiles": [
                 "${workspaceFolder}/lib/**/*.js"
-            ]
+            ],
+            "args": ["--database","sqlite", "--src", "samples/chinook-database-2.0.1.md"]
         },
         {
             "type": "node",
