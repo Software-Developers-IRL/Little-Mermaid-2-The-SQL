@@ -5,8 +5,44 @@ import path from "path";
 // import { detectDirective } from "../deps/mermaid/src/utils";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
 // import Diagram from '../deps/mermaid/src/Diagram';
-import { detectType } from '../deps/mermaid/src/diagram-api/detectType';
+import {
+  addDetector,
+  detectType,
+  DiagramDetector,
+} from "../deps/mermaid/src/diagram-api/detectType";
+import { MermaidConfig } from "../deps/mermaid/src/config.type";
+import { log } from "../deps/mermaid/src/logger";
+import erDb from "./mermaid/src/diagrams/er/erDb";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
+const diagrams: Record<string, DiagramDefinition> = {};
+
+export interface DiagramDefinition {
+  db: any;
+  renderer: any;
+  parser: any;
+  // styles: any;
+  init?: (config: MermaidConfig) => void;
+}
+
+export const registerDiagram = (
+  id: string,
+  diagram: DiagramDefinition,
+  detector: DiagramDetector
+) => {
+  if (diagrams[id]) {
+    log.warn(`Diagram ${id} already registered.`);
+  }
+  diagrams[id] = diagram;
+  addDetector(id, detector);
+  // addStylesForDiagram(id, diagram.styles);
+};
+
+export const getDiagram = (name: string): DiagramDefinition => {
+  if (name in diagrams) {
+    return diagrams[name];
+  }
+  throw new Error(`Diagram ${name} not found.`);
+};
 
 const m: any = mermaid;
 /**
@@ -18,6 +54,16 @@ export const GenerateSqlFromMermaid = async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
+  registerDiagram(
+    'er',
+    {
+      parser: null, //erParser,
+      db: erDb,
+      renderer: null,// erRenderer,
+      // styles: erStyles,
+    },
+    erDetector
+  );
   if (mermaid) {
     try {
       let config = {
@@ -93,15 +139,18 @@ export const GenerateSqlFromMermaid = async function (
               let diag;
               let parseEncounteredException;
               const type = detectType(md);
-              console.log(`d type:${type}`)
+              console.log(`d type:${type}`);
               try {
-                // diag = getDiagram(type);
+                diag = getDiagram(type);
+                console.log(JSON.stringify(diag))
                 var test5 = 1 + 1;
                 // diag = new Diagram(md);
               } catch (error) {
                 // diag = new Diagram('error');
                 parseEncounteredException = error;
               }
+              if (parseEncounteredException)
+                console.log(parseEncounteredException);
             } else {
               console.log("not erdiagram");
             }
