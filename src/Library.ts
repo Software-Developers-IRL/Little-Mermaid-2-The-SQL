@@ -12,6 +12,7 @@ import {
 } from "../deps/mermaid/src/diagram-api/detectType";
 import { MermaidConfig } from "../deps/mermaid/src/config.type";
 import { log } from "../deps/mermaid/src/logger";
+import erDb from "./mermaid/src/diagrams/er/erDb";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 const diagrams: Record<string, DiagramDefinition> = {};
 
@@ -19,7 +20,7 @@ export interface DiagramDefinition {
   db: any;
   renderer: any;
   parser: any;
-  styles: any;
+  // styles: any;
   init?: (config: MermaidConfig) => void;
 }
 
@@ -53,6 +54,16 @@ export const GenerateSqlFromMermaid = async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
+  registerDiagram(
+    'er',
+    {
+      parser: null, //erParser,
+      db: erDb,
+      renderer: null,// erRenderer,
+      // styles: erStyles,
+    },
+    erDetector
+  );
   if (mermaid) {
     try {
       let config = {
