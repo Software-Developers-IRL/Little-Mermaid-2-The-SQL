@@ -11,7 +11,7 @@ sequenceDiagram
 erDiagram
 
   artists {
-    INTEGER ArtistId
+    INTEGER ArtistId PK "'Artist' nullable"
     NVARCHAR Name
   }
 
