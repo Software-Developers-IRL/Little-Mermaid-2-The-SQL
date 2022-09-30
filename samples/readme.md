@@ -30,7 +30,7 @@
         --info-level=maximum \
         --command script \
         --script-language python \
-        --script ./share/mermaid.py > output.md
+        --script ./share/mermaid.py > ./share/output.md
       ```
   1. other commands
       * `schemacrawler -h`
