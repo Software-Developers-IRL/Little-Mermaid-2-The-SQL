@@ -203,6 +203,7 @@ export const GenerateSqlFromMermaid = async function (
                 console.log(JSON.stringify(diag.db));
                 // TODO: models?
                 // var y = diag.parser.yy(md);
+                // FIXME: having difficulty getting the jison lexer working
                 var r = diag.parser.parse(md);
                 var r2 = diag.parser.parser.parse(md);
                 // console.log(JSON.stringify(r));
