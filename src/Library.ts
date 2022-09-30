@@ -4,6 +4,12 @@ import mermaid from "mermaid";
 import path from "path";
 // import { detectDirective } from "../deps/mermaid/src/utils";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
+// import erRenderer from '../deps/mermaid/src/diagrams/er/erRenderer';
+// import jisonCode from '../deps/mermaid/src/diagrams/er/parser/erDiagram';
+import { jisonCode } from "./mermaid/src/diagrams/er/parser/erDiagram";
+// import jison from "jison"
+const jison = require("jison");
+// const jisonCode = require("../deps/mermaid/src/diagrams/er/parser/erDiagram")
 // import Diagram from '../deps/mermaid/src/Diagram';
 import {
   addDetector,
@@ -16,9 +22,19 @@ import erDb from "./mermaid/src/diagrams/er/erDb";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 const diagrams: Record<string, DiagramDefinition> = {};
 
+export const erParser = async function () {
+  // const jisonCode = await readFile(file, 'utf8');
+  // @ts-ignore no typings
+  const jsCode = new jison.Generator(jisonCode, {
+    moduleType: "amd",
+  }).generate();
+  // const [result] = await linter.lintText(jsCode);
+  return jsCode;
+};
+
 export interface DiagramDefinition {
   db: any;
-  renderer: any;
+  // renderer: any;
   parser: any;
   // styles: any;
   init?: (config: MermaidConfig) => void;
@@ -54,12 +70,13 @@ export const GenerateSqlFromMermaid = async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
+  const parser = erParser();
   registerDiagram(
-    'er',
+    "er",
     {
-      parser: null, //erParser,
+      parser: parser,
+      // renderer: null, //erRenderer,
       db: erDb,
-      renderer: null,// erRenderer,
       // styles: erStyles,
     },
     erDetector
@@ -142,7 +159,10 @@ export const GenerateSqlFromMermaid = async function (
               console.log(`d type:${type}`);
               try {
                 diag = getDiagram(type);
-                console.log(JSON.stringify(diag))
+                console.log(JSON.stringify(diag));
+                // models?
+                var r = diag.parser.parse(md);
+                console.log(JSON.stringify(r));
                 var test5 = 1 + 1;
                 // diag = new Diagram(md);
               } catch (error) {
