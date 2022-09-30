@@ -23,6 +23,7 @@ import {
 import { MermaidConfig } from "../deps/mermaid/src/config.type";
 import { log } from "../deps/mermaid/src/logger";
 import erDb from "./mermaid/src/diagrams/er/erDb";
+import { DiagramDefinition } from "./types";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 const diagrams: Record<string, DiagramDefinition> = {};
 
@@ -77,14 +78,6 @@ export const erParser = async function () {
   // }
   return parser3;
 };
-
-export interface DiagramDefinition {
-  db: any;
-  // renderer: any;
-  parser: any;
-  // styles: any;
-  init?: (config: MermaidConfig) => void;
-}
 
 export const registerDiagram = (
   id: string,
@@ -209,7 +202,7 @@ export const GenerateSqlFromMermaid = async function (
                 console.log(JSON.stringify(diag.db));
                 // var y = diag.parser.yy(md);
                 // jison lexer working!!!
-                var r = diag.parser.parse(md);
+                var r:boolean = diag.parser.parse(md);
                 var entities = diag.db.getEntities();
                 var relationships = diag.db.getRelationships();
                 // TODO: model interfaces
