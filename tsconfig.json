@@ -101,8 +101,9 @@
     "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
   },
   "include": [
-    "src",
-    "lib"
+    "src", "./package.json"
+    // "src",
+    // "lib"
   ],
   "exclude": [
     "deps",
