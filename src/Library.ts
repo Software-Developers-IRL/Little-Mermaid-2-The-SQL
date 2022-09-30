@@ -4,6 +4,13 @@ import mermaid from "mermaid";
 import path from "path";
 // import { detectDirective } from "../deps/mermaid/src/utils";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
+// import erRenderer from '../deps/mermaid/src/diagrams/er/erRenderer';
+// import jisonCode from '../deps/mermaid/src/diagrams/er/parser/erDiagram';
+import { jisonCode, erParser2 } from "./mermaid/src/diagrams/er/parser/erDiagram";
+// import jison from "jison"
+const jison = require("jison");
+import * as fs from "fs";
+// const jisonCode = require("../deps/mermaid/src/diagrams/er/parser/erDiagram")
 // import Diagram from '../deps/mermaid/src/Diagram';
 import {
   addDetector,
@@ -16,9 +23,59 @@ import erDb from "./mermaid/src/diagrams/er/erDb";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 const diagrams: Record<string, DiagramDefinition> = {};
 
+export const erParser = async function () {
+  // const jisonCode = await readFile(file, 'utf8');
+  // @ts-ignore no typings
+  /*
+  const raw = jisonCode;
+  const jsCode = new jison.Generator(jisonCode, {
+    moduleType: "amd",
+  }).generate();
+  const parser = new jison.Generator(raw, {
+    moduleType: "js",
+    "token-stack": true,
+  });
+
+  const source = parser.generate({ moduleMain: "() => {}" });
+  const exporter = `
+	parser.parser = parser;
+	export { parser };
+	export default parser;
+	`;
+  // could create a new ts file from this
+  const rawJisonExport = `${source} ${exporter}`;
+
+  await fs.writeFileSync("erDiagram.js", rawJisonExport, "utf8");
+
+  // fails
+  // const Parser = new jison.Parser(jisonCode, {
+  //   moduleType: "amd",
+  // });
+  const Parser2 = new jison.Parser(jisonCode, {
+    moduleType: "js",
+    "token-stack": true,
+  });
+  */
+  // const [result] = await linter.lintText(jsCode);
+  // return Parser2;
+  const raw = erParser2;
+  const parser3 = erParser2.default;
+  try {
+    const parser4 = new erParser2.default.parser.parser;
+  } catch (error) {
+    
+  }
+  try {
+    const parser4 = new erParser2.default.parser.parser();
+  } catch (error) {
+    
+  }
+  return parser3;
+};
+
 export interface DiagramDefinition {
   db: any;
-  renderer: any;
+  // renderer: any;
   parser: any;
   // styles: any;
   init?: (config: MermaidConfig) => void;
@@ -54,12 +111,13 @@ export const GenerateSqlFromMermaid = async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
+  const parser = await erParser();
   registerDiagram(
-    'er',
+    "er",
     {
-      parser: null, //erParser,
+      parser: parser,
+      // renderer: null, //erRenderer,
       db: erDb,
-      renderer: null,// erRenderer,
       // styles: erStyles,
     },
     erDetector
@@ -142,7 +200,13 @@ export const GenerateSqlFromMermaid = async function (
               console.log(`d type:${type}`);
               try {
                 diag = getDiagram(type);
-                console.log(JSON.stringify(diag))
+                console.log(JSON.stringify(diag.db));
+                // TODO: models?
+                // var y = diag.parser.yy(md);
+                // FIXME: having difficulty getting the jison lexer working
+                var r = diag.parser.parse(md);
+                var r2 = diag.parser.parser.parse(md);
+                // console.log(JSON.stringify(r));
                 var test5 = 1 + 1;
                 // diag = new Diagram(md);
               } catch (error) {
