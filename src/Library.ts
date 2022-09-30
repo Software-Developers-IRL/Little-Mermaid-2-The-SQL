@@ -6,7 +6,10 @@ import path from "path";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
 // import erRenderer from '../deps/mermaid/src/diagrams/er/erRenderer';
 // import jisonCode from '../deps/mermaid/src/diagrams/er/parser/erDiagram';
-import { jisonCode, erParser2 } from "./mermaid/src/diagrams/er/parser/erDiagram";
+import {
+  jisonCode,
+  erParser2,
+} from "./mermaid/src/diagrams/er/parser/erDiagram";
 // import jison from "jison"
 const jison = require("jison");
 import * as fs from "fs";
@@ -59,17 +62,19 @@ export const erParser = async function () {
   // const [result] = await linter.lintText(jsCode);
   // return Parser2;
   const raw = erParser2;
-  const parser3 = erParser2.default;
-  try {
-    const parser4 = new erParser2.default.parser.parser;
-  } catch (error) {
-    
-  }
-  try {
-    const parser4 = new erParser2.default.parser.parser();
-  } catch (error) {
-    
-  }
+  const parser3 = erParser2.default.parser();
+  // const parser3 = erParser2.default();
+  // try {
+  //   const p5 = new parser3;
+  //   const parser4 = new erParser2.default.parser.parser;
+  // } catch (error) {
+
+  // }
+  // try {
+  //   const parser4 = new erParser2.default.parser.parser();
+  // } catch (error) {
+
+  // }
   return parser3;
 };
 
@@ -89,6 +94,7 @@ export const registerDiagram = (
   if (diagrams[id]) {
     log.warn(`Diagram ${id} already registered.`);
   }
+  diagram.parser.yy = diagram.db;
   diagrams[id] = diagram;
   addDetector(id, detector);
   // addStylesForDiagram(id, diagram.styles);
@@ -201,11 +207,14 @@ export const GenerateSqlFromMermaid = async function (
               try {
                 diag = getDiagram(type);
                 console.log(JSON.stringify(diag.db));
-                // TODO: models?
                 // var y = diag.parser.yy(md);
-                // FIXME: having difficulty getting the jison lexer working
+                // jison lexer working!!!
                 var r = diag.parser.parse(md);
-                var r2 = diag.parser.parser.parse(md);
+                var entities = diag.db.getEntities();
+                var relationships = diag.db.getRelationships();
+                // TODO: model interfaces
+                // TODO: models to sql
+                // var r2 = diag.parser.parser.parse(md);
                 // console.log(JSON.stringify(r));
                 var test5 = 1 + 1;
                 // diag = new Diagram(md);

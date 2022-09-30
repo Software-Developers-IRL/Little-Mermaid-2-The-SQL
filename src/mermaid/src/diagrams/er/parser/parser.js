@@ -1149,8 +1149,8 @@ var parser$8 = (function () {
   Parser.prototype = parser2;
   parser2.Parser = Parser;
   return new Parser();
-})();
-parser$8.parser = parser$8;
+});
+// parser$8.parser = parser$8;
 
 export default {
     parser: parser$8
