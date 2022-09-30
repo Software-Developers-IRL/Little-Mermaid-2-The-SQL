@@ -160,7 +160,7 @@ export const GenerateSqlFromMermaid = async function (
               try {
                 diag = getDiagram(type);
                 console.log(JSON.stringify(diag));
-                // models?
+                // TODO: models?
                 var r = diag.parser.parse(md);
                 console.log(JSON.stringify(r));
                 var test5 = 1 + 1;
