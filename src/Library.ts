@@ -6,6 +6,7 @@ import path from "path";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
 // import Diagram from '../deps/mermaid/src/Diagram';
 import { detectType } from '../deps/mermaid/src/diagram-api/detectType';
+// import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 
 const m: any = mermaid;
 /**
@@ -93,12 +94,14 @@ export const GenerateSqlFromMermaid = async function (
               let parseEncounteredException;
               const type = detectType(md);
               console.log(`d type:${type}`)
-              // try {
-              //   diag = new Diagram(md);
-              // } catch (error) {
-              //   diag = new Diagram('error');
-              //   parseEncounteredException = error;
-              // }
+              try {
+                // diag = getDiagram(type);
+                var test5 = 1 + 1;
+                // diag = new Diagram(md);
+              } catch (error) {
+                // diag = new Diagram('error');
+                parseEncounteredException = error;
+              }
             } else {
               console.log("not erdiagram");
             }
