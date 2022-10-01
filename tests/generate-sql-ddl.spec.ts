@@ -1,4 +1,4 @@
-import { Parser } from "./generate-sql-ddl";
+import { Parser } from "../src/generate-sql-ddl";
 
 describe("Generate DDL examples", () => {
   it("Should generate create table SQL syntax", () => {
