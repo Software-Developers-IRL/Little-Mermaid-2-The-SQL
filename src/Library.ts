@@ -24,6 +24,7 @@ import { MermaidConfig } from "../deps/mermaid/src/config.type";
 import { log } from "../deps/mermaid/src/logger";
 import erDb from "./mermaid/src/diagrams/er/erDb";
 import { DiagramDefinition } from "./types";
+import { DbParser } from "./generate-sql-ddl";
 // import { getDiagram } from '../deps/mermaid/src/diagram-api/diagramAPI';
 const diagrams: Record<string, DiagramDefinition> = {};
 
@@ -205,8 +206,9 @@ export const GenerateSqlFromMermaid = async function (
                 var r:boolean = diag.parser.parse(md);
                 var entities = diag.db.getEntities();
                 var relationships = diag.db.getRelationships();
-                // TODO: model interfaces
+                // model interfaces
                 // TODO: models to sql
+                const ddlSyntax = new DbParser(databaseType, diag.db).getSQLDataDefinition();
                 // var r2 = diag.parser.parser.parse(md);
                 // console.log(JSON.stringify(r));
                 var test5 = 1 + 1;
