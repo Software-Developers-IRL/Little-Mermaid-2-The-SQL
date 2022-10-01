@@ -65,8 +65,8 @@ for table in catalog.tables:
   if(addSpace):
     print('')
 # old way
-for table in catalog.tables:  
-  for childTable in table.getRelatedTables(TableRelationshipType.child):
-    print('  ' + table.name + ' ||--o{ ' + childTable.name + ' : "foreign key"')
-  print('')
-print('```')
+# for table in catalog.tables:  
+#   for childTable in table.getRelatedTables(TableRelationshipType.child):
+#     print('  ' + table.name + ' ||--o{ ' + childTable.name + ' : "foreign key"')
+#   print('')
+# print('```')
