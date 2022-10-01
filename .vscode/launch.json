@@ -25,7 +25,7 @@
             "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
             "args": [
                 "-c",
-                "./jest.config.js",
+                "./jest.config.ts",
                 "--verbose",
                 "-i",
                 "--no-cache"
@@ -40,7 +40,7 @@
             "program": "${workspaceRoot}/node_modules/jest/bin/jest.js",
             "args": [
                 "-c",
-                "./jest.config.js",
+                "./jest.config.ts",
                 "--verbose",
                 "-i",
                 "--no-cache",
