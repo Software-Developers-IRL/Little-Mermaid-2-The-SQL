@@ -44,7 +44,8 @@ export class DbParser {
     if (this.entities) {
       for (const key in this.entities) {
         if (Object.prototype.hasOwnProperty.call(this.entities, key)) {
-          const element = this.entities[key];
+          const entity = this.entities[key];
+          statementGeneration.push(this.createTable(key, entity));
         }
       }
     }
@@ -71,10 +72,97 @@ export class DbParser {
     // }
     return statementGeneration.join("");
   }
-
-  private createTable(tableName: string) {
-    return `CREATE TABLE ${tableName}`;
+  /**
+   * convert labels with start and end strings per database type
+   * @param label
+   * @returns
+   */
+  private dbTypeEnds(label: string) {
+    let char1 = '"';
+    let char2 = '"';
+    if (this.dbType == "mysql") {
+      char1 = "`";
+      char2 = "`";
+    } else if (this.dbType == "sqlserver") {
+      char1 = "[";
+      char2 = "]";
+    }
+    return `${char1}${label}${char2}`;
   }
+  /**
+   * generate create table statement
+   * @param entityKey
+   * @param entity
+   * @returns
+   */
+  private createTable(entityKey: string, entity: DbEntityDefinition) {
+    let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (\n`;
+    // TODO: incorporate foreign keys using relationships
+    for (let i = 0; i < entity.attributes.length; i++) {
+      const attribute = entity.attributes[i];
+      if (attribute.attributeType && attribute.attributeName) {
+        // need to add parenthesis or commas
+        let columnType = attribute.attributeType.replace("_", ",");
+        let columnTypeLength = columnType.replace(/[^0-9,]/gim, "");
+        columnType = (
+          columnType.replace(/[^a-z]/gim, "") +
+          (columnTypeLength ? `(${columnTypeLength})` : "")
+        ).trim();
+        if (attribute.attributeComment) {
+          // check if contains full column name
+          statement += `\t${this.dbTypeEnds(
+            attribute.attributeName
+          )} ${columnType} ${attribute.attributeComment}`;
+        } else {
+          statement += `\t${this.dbTypeEnds(
+            attribute.attributeName
+          )} ${columnType}`;
+        }
+        statement += i != entity.attributes.length - 1 ? ",\n" : "\n";
+      }
+    }
+
+    statement += `\n)`;
+    return statement;
+  }
+
+  /* database create table examples:
+  sqlite example:
+  CREATE TABLE [test_table] (
+    "id"	INTEGER NOT NULL,
+    "Field 2_2"	TEXT,
+    "Artist Id"	INTEGER,
+    PRIMARY KEY("id"),
+    FOREIGN KEY("Artist Id") REFERENCES "Artist"("ArtistId") ON DELETE NO ACTION ON UPDATE NO ACTION
+  )
+
+  mysql example:
+  CREATE TABLE `test_table` (
+    `id` INTEGER NOT NULL,
+    `Field 2_2` TEXT,
+    `Artist Id` INTEGER,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`Artist Id`) REFERENCES `Artist`(`ArtistId`)
+  );
+
+  postgres example:
+  CREATE TABLE "test_table" (
+    "id" INTEGER NOT NULL,
+    "Field 2_2" TEXT,
+    "Artist Id" INTEGER,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("Artist Id"") REFERENCES "Artist"("ArtistId")
+  );
+
+  sql server example:
+  CREATE TABLE [test_table] (
+    [id] INTEGER NOT NULL,
+    [Field 2_2] TEXT,
+    [Artist Id] INTEGER,
+    PRIMARY KEY ([id]),
+    FOREIGN KEY ([Artist Id]) REFERENCES [Artist]([ArtistId])
+  );
+  */
 
   private createColumn(
     tableName: string,

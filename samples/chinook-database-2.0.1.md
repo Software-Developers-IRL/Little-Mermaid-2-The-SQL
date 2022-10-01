@@ -10,121 +10,126 @@ sequenceDiagram
 ```mermaid
 erDiagram
 
-  artists {
-    INTEGER ArtistId PK "'Artist' nullable"
-    NVARCHAR Name
+  Artist {
+    INTEGER ArtistId PK "NOT NULL"
+    NVARCHAR120 Name
   }
 
-  employees {
-    INTEGER EmployeeId
-    NVARCHAR LastName
-    NVARCHAR FirstName
-    NVARCHAR Title
-    INTEGER ReportsTo
+  Employee {
+    INTEGER EmployeeId PK "NOT NULL"
+    NVARCHAR20 LastName "NOT NULL"
+    NVARCHAR20 FirstName "NOT NULL"
+    NVARCHAR30 Title
+    INTEGER ReportsTo FK
     DATETIME BirthDate
     DATETIME HireDate
-    NVARCHAR Address
-    NVARCHAR City
-    NVARCHAR State
-    NVARCHAR Country
-    NVARCHAR PostalCode
-    NVARCHAR Phone
-    NVARCHAR Fax
-    NVARCHAR Email
+    NVARCHAR70 Address
+    NVARCHAR40 City
+    NVARCHAR40 State
+    NVARCHAR40 Country
+    NVARCHAR10 PostalCode
+    NVARCHAR24 Phone
+    NVARCHAR24 Fax
+    NVARCHAR60 Email
   }
 
-  genres {
-    INTEGER GenreId
-    NVARCHAR Name
+  Genre {
+    INTEGER GenreId PK "NOT NULL"
+    NVARCHAR120 Name
   }
 
-  media_types {
-    INTEGER MediaTypeId
-    NVARCHAR Name
+  MediaType {
+    INTEGER MediaTypeId PK "NOT NULL"
+    NVARCHAR120 Name
   }
 
-  playlists {
-    INTEGER PlaylistId
-    NVARCHAR Name
+  Playlist {
+    INTEGER PlaylistId PK "NOT NULL"
+    NVARCHAR120 Name
   }
 
-  albums {
-    INTEGER AlbumId
-    NVARCHAR Title
-    INTEGER ArtistId
+  Album {
+    INTEGER AlbumId PK "NOT NULL"
+    NVARCHAR160 Title "NOT NULL"
+    INTEGER ArtistId FK "NOT NULL"
   }
 
-  customers {
-    INTEGER CustomerId
-    NVARCHAR FirstName
-    NVARCHAR LastName
-    NVARCHAR Company
-    NVARCHAR Address
-    NVARCHAR City
-    NVARCHAR State
-    NVARCHAR Country
-    NVARCHAR PostalCode
-    NVARCHAR Phone
-    NVARCHAR Fax
-    NVARCHAR Email
-    INTEGER SupportRepId
+  Customer {
+    INTEGER CustomerId PK "NOT NULL"
+    NVARCHAR40 FirstName "NOT NULL"
+    NVARCHAR20 LastName "NOT NULL"
+    NVARCHAR80 Company
+    NVARCHAR70 Address
+    NVARCHAR40 City
+    NVARCHAR40 State
+    NVARCHAR40 Country
+    NVARCHAR10 PostalCode
+    NVARCHAR24 Phone
+    NVARCHAR24 Fax
+    NVARCHAR60 Email "NOT NULL"
+    INTEGER SupportRepId FK
   }
 
-  invoices {
-    INTEGER InvoiceId
-    INTEGER CustomerId
-    DATETIME InvoiceDate
-    NVARCHAR BillingAddress
-    NVARCHAR BillingCity
-    NVARCHAR BillingState
-    NVARCHAR BillingCountry
-    NVARCHAR BillingPostalCode
-    NUMERIC Total
+  test_table {
+    INTEGER id PK "NOT NULL"
+    TEXT Field2_2 "'Field 2_2'"
+    INTEGER ArtistId FK "'Artist Id'"
   }
 
-  tracks {
-    INTEGER TrackId
-    NVARCHAR Name
-    INTEGER AlbumId
-    INTEGER MediaTypeId
-    INTEGER GenreId
-    NVARCHAR Composer
-    INTEGER Milliseconds
+  Invoice {
+    INTEGER InvoiceId PK "NOT NULL"
+    INTEGER CustomerId FK "NOT NULL"
+    DATETIME InvoiceDate "NOT NULL"
+    NVARCHAR70 BillingAddress
+    NVARCHAR40 BillingCity
+    NVARCHAR40 BillingState
+    NVARCHAR40 BillingCountry
+    NVARCHAR10 BillingPostalCode
+    NUMERIC10_2 Total "NOT NULL"
+  }
+
+  Track {
+    INTEGER TrackId PK "NOT NULL"
+    NVARCHAR200 Name "NOT NULL"
+    INTEGER AlbumId FK
+    INTEGER MediaTypeId FK "NOT NULL"
+    INTEGER GenreId FK
+    NVARCHAR220 Composer
+    INTEGER Milliseconds "NOT NULL"
     INTEGER Bytes
-    NUMERIC UnitPrice
+    NUMERIC10_2 UnitPrice "NOT NULL"
   }
 
-  invoice_items {
-    INTEGER InvoiceLineId
-    INTEGER InvoiceId
-    INTEGER TrackId
-    NUMERIC UnitPrice
-    INTEGER Quantity
+  InvoiceLine {
+    INTEGER InvoiceLineId PK "NOT NULL"
+    INTEGER InvoiceId FK "NOT NULL"
+    INTEGER TrackId FK "NOT NULL"
+    NUMERIC10_2 UnitPrice "NOT NULL"
+    INTEGER Quantity "NOT NULL"
   }
 
-  playlist_track {
-    INTEGER PlaylistId
-    INTEGER TrackId
+  PlaylistTrack {
+    INTEGER PlaylistId PK "NOT NULL"
+    INTEGER TrackId PK "NOT NULL"
   }
 
-  artists ||--o{ albums : "foreign key"
+  Artist ||--o{ Album : "[Artist.ArtistId] to [Album.ArtistId]"
 
-  employees ||--o{ customers : "foreign key"
-  employees ||--o{ employees : "foreign key"
+  Employee ||--o{ Customer : "[Employee.EmployeeId] to [Customer.SupportRepId]"
 
-  genres ||--o{ tracks : "foreign key"
+  Artist ||--o{ test_table : "[Artist.ArtistId] to ['test_table'.'Artist Id']"
 
-  media_types ||--o{ tracks : "foreign key"
+  Customer ||--o{ Invoice : "[Customer.CustomerId] to [Invoice.CustomerId]"
 
-  playlists ||--o{ playlist_track : "foreign key"
+  Album ||--o{ Track : "[Album.AlbumId] to [Track.AlbumId]"
+  Genre ||--o{ Track : "[Genre.GenreId] to [Track.GenreId]"
+  MediaType ||--o{ Track : "[MediaType.MediaTypeId] to [Track.MediaTypeId]"
 
-  albums ||--o{ tracks : "foreign key"
+  Invoice ||--o{ InvoiceLine : "[Invoice.InvoiceId] to [InvoiceLine.InvoiceId]"
+  Track ||--o{ InvoiceLine : "[Track.TrackId] to [InvoiceLine.TrackId]"
 
-  customers ||--o{ invoices : "foreign key"
+  Playlist ||--o{ PlaylistTrack : "[Playlist.PlaylistId] to [PlaylistTrack.PlaylistId]"
+  Track ||--o{ PlaylistTrack : "[Track.TrackId] to [PlaylistTrack.TrackId]"
 
-  invoices ||--o{ invoice_items : "foreign key"
-
-  tracks ||--o{ invoice_items : "foreign key"
-  tracks ||--o{ playlist_track : "foreign key"
 
 ```
