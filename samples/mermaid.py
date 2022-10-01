@@ -14,7 +14,8 @@ print('erDiagram')
 print('')
 # generate entity tables
 for table in catalog.tables:
-  print('  ' + table.fullName + ' {')
+  tableFullName = re.sub("[\"\']", "", table.fullName).replace(" ","_")
+  print('  ' + tableFullName + ' {')
   for column in table.columns:
     # // need to remove quotes and spaces
     # get all column attributes for debugging
@@ -47,11 +48,22 @@ for table in catalog.tables:
 # generate relationships, need to display keys in the description for sql generation
 # https://www.tabnine.com/code/java/methods/schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder/includeGreppedColumns
 for table in catalog.tables:  
+  tableOriginal = re.sub("[\"\']", "", table.fullName)
+  tableFullName = tableOriginal.replace(" ","_")
+  # print (tableFullName)
+  addSpace = False
   for foreignKeys in table.foreignKeys:
-    relationshipTxt = str(foreignKeys.primaryKeyTable.primaryKey.columns) + " to " + str(foreignKeys.columns)
-    relationshipTxt = "\"" + re.sub("[\"]", "\'", relationshipTxt) + "\"" 
-    print('  ' + table.fullName + ' ||--o{ ' + str(foreignKeys.foreignKeyTable) + ' : '+ relationshipTxt)
-  print('')
+    fkTableOriginal = str(foreignKeys.primaryKeyTable)
+    fkTableFullName = fkTableOriginal.replace(" ", "_")
+    if(tableFullName != fkTableFullName): 
+      addSpace = True
+      relationshipTxt = str(foreignKeys.primaryKeyTable.primaryKey.columns) + " to " + str(foreignKeys.columns)
+      relationshipTxt = "\"" + re.sub("[\"]", "\'", relationshipTxt) + "\"" 
+      relationshipTxt = relationshipTxt.replace(tableOriginal,tableFullName).replace(fkTableOriginal, fkTableFullName)
+      # str(foreignKeys.foreignKeyTable)
+      print('  ' + fkTableOriginal + ' ||--o{ ' + tableFullName + ' : '+ relationshipTxt)
+  if(addSpace):
+    print('')
 # old way
 for table in catalog.tables:  
   for childTable in table.getRelatedTables(TableRelationshipType.child):
