@@ -12,6 +12,7 @@ print('')
 print('```mermaid')
 print('erDiagram')
 print('')
+# generate entity tables
 for table in catalog.tables:
   print('  ' + table.fullName + ' {')
   for column in table.columns:
@@ -28,20 +29,30 @@ for table in catalog.tables:
       # isPartOfIndex
       # isPartOfUniqueIndex
     keyType = " PK" if column.partOfPrimaryKey else ""
-    if(keyType != "" and column.partOfForeignKey ):
+    if(keyType == "" and column.partOfForeignKey ):
        keyType = " FK"
     # dont need to define FK can get through relationships
     # keyType += (""  if keyType == "" else ",") + "FK" if column.partOfForeignKey else ""
     extraAttributes = ""
     if(columnFullName != ""):
       extraAttributes += columnFullName
-    
+    if(not column.nullable):
+      extraAttributes += " NOT NULL"
     if(extraAttributes != ""):
-      extraAttributes = " \"" + extraAttributes + "\""
+      extraAttributes = " \"" + extraAttributes.strip() + "\""
     print('    ' + re.sub("[,]", "_",re.sub(r'[()]', '', column.columnDataType.name)) + ' ' + columnShortName + keyType +  extraAttributes)
   print('  }')
   print('')
 
+# generate relationships, need to display keys in the description for sql generation
+# https://www.tabnine.com/code/java/methods/schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder/includeGreppedColumns
+for table in catalog.tables:  
+  for foreignKeys in table.foreignKeys:
+    relationshipTxt = str(foreignKeys.primaryKeyTable.primaryKey.columns) + " to " + str(foreignKeys.columns)
+    relationshipTxt = "\"" + re.sub("[\"]", "\'", relationshipTxt) + "\"" 
+    print('  ' + table.fullName + ' ||--o{ ' + str(foreignKeys.foreignKeyTable) + ' : '+ relationshipTxt)
+  print('')
+# old way
 for table in catalog.tables:  
   for childTable in table.getRelatedTables(TableRelationshipType.child):
     print('  ' + table.name + ' ||--o{ ' + childTable.name + ' : "foreign key"')
