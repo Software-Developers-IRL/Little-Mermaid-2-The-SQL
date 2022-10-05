@@ -11,6 +11,7 @@
             -v $(pwd):/home/schcrwlr/share \
             --name schemacrawler \
             --rm -i -t \
+            --add-host host.docker.internal:host-gateway \
             --entrypoint=/bin/bash \
             schemacrawler/schemacrawler
           ```
@@ -20,6 +21,7 @@
             -v "%cd%":/home/schcrwlr/share ^
             --name schemacrawler ^
             --rm -i -t ^
+            --add-host host.docker.internal:host-gateway ^
             --entrypoint="/bin/bash" ^
             schemacrawler/schemacrawler
           ```

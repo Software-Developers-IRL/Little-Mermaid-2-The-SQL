@@ -104,6 +104,9 @@ dist
 .tern-port
 lib
 deps/mermaid
-samples/output.md
+samples/output*.md
+samples/raw*.txt
+samples/*.sql
+samples/*/*.sql
 junit.xml
 *.bak
