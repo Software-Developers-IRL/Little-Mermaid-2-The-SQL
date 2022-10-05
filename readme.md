@@ -4,7 +4,7 @@
 # Getting Started
 
 1. git clone repo
-    1. run `git submodule update --init --recursive` to clone submodule dependencies
+    1. run `git submodule update --init --recursive --progress` to clone submodule dependencies
 2. run 'npm install' inside directory.
 3. `npm run littleMermaid2SQL -- -d sqlite --src samples/chinook-database-2.0.1.md`
 
