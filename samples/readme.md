@@ -1,5 +1,5 @@
 # Samples
-* generate mermaid from sql using schemacrawler
+* generate mermaid erDiagram from database using schemacrawler
 * from https://dev.to/sualeh/how-to-generate-mermaid-diagrams-for-your-database-33bn
 
 ## Steps
@@ -23,25 +23,8 @@
             --entrypoint="/bin/bash" ^
             schemacrawler/schemacrawler
           ```
-  1. generate output
-      ```sh
-      schemacrawler \
-        --server=sqlite --database=./share/chinook-database-2.0.1.sqlite \
-        --info-level=maximum \
-        --command script \
-        --script-language python \
-        --script ./share/mermaid.py > ./share/output.md
-      ```
-  1. other commands
-      * `schemacrawler -h`
-      * 
-        ```sh
-        schemacrawler \
-          --server=sqlite --database=./share/chinook-database-2.0.1.sqlite \
-          --info-level=maximum --command=schema
-        ```
-      * ```
-        schemacrawler \
-          --server=sqlite --database=./share/chinook-database-2.0.1.sqlite \
-          --info-level=maximum execute --command list
-        ```
+  1. Examples
+     1. [SQLITE](./example_sqlite.md)
+     1. [PostgreSQL](./example_postgres.md)
+     1. [Mysql](./example_mysql.md)
+     1. [SQLServer](./example_sqlserver.md)
