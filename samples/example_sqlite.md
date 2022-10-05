@@ -1,6 +1,6 @@
 # SQLITE Example
 * [Back](./readme.md)
-
+* original source https://dev.to/sualeh/how-to-generate-mermaid-diagrams-for-your-database-33bn
 ## Commands
   1. generate output
       ```sh

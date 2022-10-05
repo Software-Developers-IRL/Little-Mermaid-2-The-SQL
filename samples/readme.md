@@ -1,6 +1,6 @@
 # Samples
+* [Home](../readme.md)
 * generate mermaid erDiagram from database using schemacrawler
-* from https://dev.to/sualeh/how-to-generate-mermaid-diagrams-for-your-database-33bn
 
 ## Steps
   1. `cd samples`
