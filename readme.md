@@ -13,12 +13,8 @@
 * see [samples](./samples/readme.md) for more information
 
 ## Technologies 
-
-esLint
-https://eslint.org/
-TypeScript
-https://www.typescriptlang.org/
-Jest 
-https://jestjs.io/
+* [esLint](https://eslint.org/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Jest](https://jestjs.io/)
 
 
