@@ -14,13 +14,17 @@ print('erDiagram')
 print('')
 # generate entity tables
 for table in catalog.tables:
-  tableFullName = re.sub("[\"\']", "", table.fullName).replace(" ","_")
+  tableFullName = re.sub("[\"\']", "", table.fullName).replace(" ","_").replace(".","_")
   print('  ' + tableFullName + ' {')
   for column in table.columns:
     # // need to remove quotes and spaces
     # get all column attributes for debugging
     # print (dir(column))
-    columnShortName = re.sub("[\"\']", "", column.name).replace(" ","")
+    columnShortName = re.sub("[\"\']", "", column.name).replace(" ","").replace(".","_")
+    # check if any alphanumerics as can't start with number, add r if not
+    hasStartingLetter = str(re.sub(r'[^a-zA-Z]', '', columnShortName[0])) != ""
+    if(not hasStartingLetter):
+      columnShortName = "r" + columnShortName
     columnFullName = ""
     if(columnShortName != column.name):
       columnFullName = "'" + column.name + "'"
@@ -49,19 +53,19 @@ for table in catalog.tables:
 # https://www.tabnine.com/code/java/methods/schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder/includeGreppedColumns
 for table in catalog.tables:  
   tableOriginal = re.sub("[\"\']", "", table.fullName)
-  tableFullName = tableOriginal.replace(" ","_")
+  tableFullName = tableOriginal.replace(" ","_").replace(".","_")
   # print (tableFullName)
   addSpace = False
   for foreignKeys in table.foreignKeys:
     fkTableOriginal = str(foreignKeys.primaryKeyTable)
-    fkTableFullName = fkTableOriginal.replace(" ", "_")
+    fkTableFullName = fkTableOriginal.replace(" ", "_").replace(".","_")
     if(tableFullName != fkTableFullName): 
       addSpace = True
       relationshipTxt = str(foreignKeys.primaryKeyTable.primaryKey.columns) + " to " + str(foreignKeys.columns)
       relationshipTxt = "\"" + re.sub("[\"]", "\'", relationshipTxt) + "\"" 
       relationshipTxt = relationshipTxt.replace(tableOriginal,tableFullName).replace(fkTableOriginal, fkTableFullName)
       # str(foreignKeys.foreignKeyTable)
-      print('  ' + fkTableOriginal + ' ||--o{ ' + tableFullName + ' : '+ relationshipTxt)
+      print('  ' + fkTableFullName + ' ||--o{ ' + tableFullName + ' : '+ relationshipTxt)
   if(addSpace):
     print('')
 # old way
