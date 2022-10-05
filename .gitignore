@@ -106,3 +106,4 @@ lib
 deps/mermaid
 samples/output.md
 junit.xml
+*.bak
