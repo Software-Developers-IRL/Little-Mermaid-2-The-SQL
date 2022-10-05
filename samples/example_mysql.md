@@ -21,6 +21,9 @@
         --script-language python \
         --script ./share/mermaid.py > ./share/output_mysql.md
       ```
+      * NOTES:
+        * FIXME: where generator doesn't close, some type error in mermaid.py
+        * **Maximum text size in diagram exceeded**, apparently mermaid has limits [see](https://github.com/mermaid-js/mermaid-cli/issues/113)
   1. other commands
       * `schemacrawler -h`
       * 
