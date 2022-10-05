@@ -19,7 +19,7 @@
 
 ## Commands
   1. TODO: NOT WORKING....
-  1. generate output [see](./Adventureworks_pg.md)
+  1. generate output [see]()
       ```sh
       schemacrawler \
         --server=sqlserver --database=AdventureworksLTS2019 \
@@ -34,13 +34,13 @@
       * 
         ```sh
         schemacrawler \
-          --server=sqlserver --database=Adventureworks \
+          --server=sqlserver --database=AdventureworksLTS2019 \
           --user=sa --host=host.docker.internal,1234 --password="yourStrong(!)Password" \
           --info-level=maximum --command=schema > ./share/raw_mssql.txt
         ```
       * ```
         schemacrawler \
-          --server=sqlserver --database=Adventureworks \
-          --user=sa --host=host.docker.internal,1234 --password="yourStrong(!)Password" \
+          --server=sqlserver --database="AdventureworksLTS2019" \
+          --user=sa --host="host.docker.internal,1234" --password="yourStrong(!)Password" \
           --info-level=maximum execute --command list
         ```
