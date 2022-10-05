@@ -7,6 +7,13 @@ today = date.today()
 print('# Mermaid erDiagram')
 print ('* generated using schemacrawler on:' + str(today))
 print ('* using Little-Mermaid-2-TheSQL formatting')
+databaseInfo = str(catalog.databaseInfo) \
+  .strip() \
+  .replace("--", "") \
+  .strip() \
+  .replace("database:", "databaseInfo:")
+print ('* ' + databaseInfo)
+print ('* database: ' + str(catalog.schemas))
 # TODO include package version
 print('')
 print('```mermaid')
