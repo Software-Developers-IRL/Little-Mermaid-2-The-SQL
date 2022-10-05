@@ -18,4 +18,29 @@
    * run restore from SSMS or Azure Data Studio
 
 ## Commands
-  1. generate output
+  1. TODO: NOT WORKING....
+  1. generate output [see](./Adventureworks_pg.md)
+      ```sh
+      schemacrawler \
+        --server=sqlserver --database=AdventureworksLTS2019 \
+          --port=1234 --user=sa --host=host.docker.internal --password="yourStrong(!)Password" \
+        --info-level=maximum \
+        --command script \
+        --script-language python \
+        --script ./share/mermaid.py > ./share/output_mssql.md
+      ```
+  1. other commands
+      * `schemacrawler -h`
+      * 
+        ```sh
+        schemacrawler \
+          --server=sqlserver --database=Adventureworks \
+          --user=sa --host=host.docker.internal,1234 --password="yourStrong(!)Password" \
+          --info-level=maximum --command=schema > ./share/raw_mssql.txt
+        ```
+      * ```
+        schemacrawler \
+          --server=sqlserver --database=Adventureworks \
+          --user=sa --host=host.docker.internal,1234 --password="yourStrong(!)Password" \
+          --info-level=maximum execute --command list
+        ```
