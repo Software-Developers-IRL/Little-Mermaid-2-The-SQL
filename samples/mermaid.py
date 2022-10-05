@@ -69,4 +69,4 @@ for table in catalog.tables:
 #   for childTable in table.getRelatedTables(TableRelationshipType.child):
 #     print('  ' + table.name + ' ||--o{ ' + childTable.name + ' : "foreign key"')
 #   print('')
-# print('```')
+print('```')
