@@ -8,5 +8,6 @@
    * user: root
    * password: my-secret-pw
 1. Restore backup
+   * download [AdventureWorks-MySQL-with-FKs.zip](https://github.com/tapsey/AdventureWorksMYSQL/blob/master/AdventureWorks-MySQL-with-FKs.zip)
 ## Commands
   1. generate output
