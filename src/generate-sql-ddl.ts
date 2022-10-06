@@ -21,7 +21,7 @@ export class DbParser {
   private symbols = ["INTEGER", "NVARCHAR", "DATETIME", "NUMERIC"];
   private db: DbDefinition;
   private dbType: string;
-  private dataDefinitions!: Array<string>;
+  // private dataDefinitions!: Array<string>;
   private entities!: Record<string, DbEntityDefinition>;
   private relationships!: DbRelationshipDefinition[];
 
@@ -36,11 +36,6 @@ export class DbParser {
   public getSQLDataDefinition() {
     this.entities = this.db.getEntities();
     this.relationships = this.db.getRelationships();
-    // const tokens = this.ast.trim().split(" ");
-    // console.log(tokens);
-    // if(tokens[0] !== 'erDiagram'){
-    //     throw 'Expecting erDiagram keyword';
-    // }
     return this.lexer();
   }
 
@@ -54,27 +49,6 @@ export class DbParser {
         }
       }
     }
-    // for(let i = 1; i < tokens.length; i++){
-    //     if(this.symbols.includes(tokens[i])){
-    //         throw `Keyword reserved '${tokens[i]}'`;
-    //     }
-    //     const tableName = tokens[i];
-    //     i++;
-    //     if(tokens[i] !== "{"){
-    //         throw `Expecting '{' got : '${tokens[i]}'`;
-    //     }
-    //     i++;
-    //     while(tokens[i] !== '}' && i < tokens.length){
-    //         if(!this.symbols.includes(tokens[i])){
-    //             throw `Expecting keyword got : '${tokens[i]}'`;
-    //         }
-    //         const dataType = tokens[i];
-    //         i++;
-    //         statementGeneration.push(this.createColumn(tableName, tokens[i], dataType));
-    //         i++;
-    //     }
-    //     statementGeneration.unshift(this.createTable(tableName));
-    // }
     return statementGeneration.join("");
   }
   /**
@@ -199,22 +173,6 @@ export class DbParser {
             pkCol
           )})`;
         }
-        // const keys = fk.roleA.match(
-        //   /(?<=((?<=[\s,.:;\[]|^)[/]]))(?:(?=(\\?))\2.)*?(?=\1)/gmu
-        // );
-
-        // const keys2 = fk.roleA.match(
-        //   /\[(.*)\]/gmu
-        // );
-        // const keys3 = fk.roleA.replace(
-        //   /\[(.*)\]/gmu,""
-        // );
-        // const keys4 = fk.roleA.match(
-        //   /\[.*\]/gmu
-        // );
-        // const keys5 = fk.roleA.match(
-        //   /(?<=\[).*(?=\])/gmu
-        // );
         let test = 1 + 1;
       }
     }
