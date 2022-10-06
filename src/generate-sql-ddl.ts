@@ -31,7 +31,7 @@ export class DbParser {
   }
   /**
    * return sql from mermaid erDiagram db models
-   * @returns 
+   * @returns
    */
   public getSQLDataDefinition() {
     this.entities = this.db.getEntities();
@@ -101,30 +101,68 @@ export class DbParser {
    * @returns
    */
   private createTable(entityKey: string, entity: DbEntityDefinition) {
-    let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (\n`;
+    let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (`;
     // TODO: incorporate foreign keys using relationships
+    let primaryKeys: string[] = [];
+    let attributesAdded = 0;
     for (let i = 0; i < entity.attributes.length; i++) {
       const attribute = entity.attributes[i];
       if (attribute.attributeType && attribute.attributeName) {
+        statement += attributesAdded == 0 ? "\n" : ",\n";
+        attributesAdded++;
         // need to add parenthesis or commas
         let columnType = attribute.attributeType.replace("_", ",");
         let columnTypeLength = columnType.replace(/[^0-9,]/gim, "");
         columnType = (
-          columnType.replace(/[^a-z]/gim, "") +
+          columnType.replace(/[^a-zA-Z]/gim, "") +
           (columnTypeLength ? `(${columnTypeLength})` : "")
         ).trim();
         if (attribute.attributeComment) {
+          let attributeName = attribute.attributeName;
+          if (attribute.attributeComment.indexOf("'") != -1) {
+            // extract
+            const testFullName = attribute.attributeComment.replace(
+              /(["']).*\1(?![^\s])/gim,
+              ""
+            );
+            if (testFullName) {
+              attributeName = testFullName;
+            }
+          }
           // check if contains full column name
-          statement += `\t${this.dbTypeEnds(
-            attribute.attributeName
-          )} ${columnType} ${attribute.attributeComment}`;
+          statement += `\t${this.dbTypeEnds(attributeName)} ${columnType} ${
+            attribute.attributeComment
+          }`;
+          if (
+            attribute.attributeKeyType &&
+            attribute.attributeKeyType == "PK"
+          ) {
+            primaryKeys.push(attribute.attributeName);
+          }
         } else {
+          if (
+            attribute.attributeKeyType &&
+            attribute.attributeKeyType == "PK"
+          ) {
+            primaryKeys.push(attribute.attributeName);
+          }
           statement += `\t${this.dbTypeEnds(
             attribute.attributeName
           )} ${columnType}`;
         }
-        statement += i != entity.attributes.length - 1 ? ",\n" : "\n";
+        // statement += i != entity.attributes.length - 1 ? ",\n" : "\n";
       }
+    }
+    if (primaryKeys.length > 0) {
+      statement += ",\n\tPRIMARY KEY(";
+      for (let i = 0; i < primaryKeys.length; i++) {
+        const element = primaryKeys[i];
+        statement += (i == 0 ? "" : ",") + this.dbTypeEnds(primaryKeys[i]);
+      }
+      statement += ")";
+    }
+    if (attributesAdded != 0) {
+      statement += "\n";
     }
 
     statement += `)\n\n`;
