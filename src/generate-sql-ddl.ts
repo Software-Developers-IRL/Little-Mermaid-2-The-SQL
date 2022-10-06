@@ -96,13 +96,13 @@ export class DbParser {
   }
   /**
    * generate create table statement
+   * also includes primary keys and foreign keys
    * @param entityKey
    * @param entity
    * @returns
    */
   private createTable(entityKey: string, entity: DbEntityDefinition) {
     let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (`;
-    // TODO: incorporate foreign keys using relationships
     let primaryKeys: string[] = [];
     let attributesAdded = 0;
     for (let i = 0; i < entity.attributes.length; i++) {
@@ -180,15 +180,18 @@ export class DbParser {
           fkRelTxt[0] == "[" &&
           fkRelTxt[fkRelTxt.length - 1] == "]"
         ) {
-          let keys = fkRelTxt.substring(1, fkRelTxt.length - 2).split(keySplit);
-          let fkCol = keys[1];
+          let keys = fkRelTxt.substring(1, fkRelTxt.length - 1).split(keySplit);
+          // remove quotes
+          let fkCol = keys[1].replace(/[\'\"]/gim,"");
           if (fkCol.indexOf(".") != -1) {
             fkCol = fkCol.split(".")[1];
           }
-          let pkCol = keys[0];
+          fkCol = fkCol.trim();
+          let pkCol = keys[0].replace(/[\'\"]/gim,"");
           if (pkCol.indexOf(".") != -1) {
             pkCol = pkCol.split(".")[1];
           }
+          pkCol = pkCol.trim();
           // FOREIGN KEY (`Artist Id`) REFERENCES `Artist`(`ArtistId`)
           statement += `,\n\tFOREIGN KEY (${this.dbTypeEnds(
             fkCol
