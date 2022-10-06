@@ -71,6 +71,8 @@ export const getDiagram = (name: string): DiagramDefinition => {
 };
 
 const m: any = mermaid;
+
+// TODO: write files, vs return create statments?
 /**
  * parse markdown erDiagram mermaid in sql
  * @param fileContents
@@ -182,12 +184,12 @@ export const GenerateSqlFromMermaid = async function (
                     diag.db
                   ).getSQLDataDefinition();
 
-                  // TODO: write to file
+                  // write to file
                   await fs.promises.writeFile(imgFile, ddlSyntax)
                   info(` ✅ ${imgFile}`)
                 } else {
                   // should never hit b/c an error in parsing throws an exception
-                  console.log("Error parsing erDiagram");
+                  console.log(`Error parsing erDiagram of:${imgFile}`);
                 }
               } catch (error) {
                 // diag = new Diagram('error');
@@ -196,7 +198,7 @@ export const GenerateSqlFromMermaid = async function (
               if (parseEncounteredException)
                 console.log(parseEncounteredException);
             } else {
-              console.log("Not an erDiagram skipping.");
+              console.log(`${imgFile} is not an erDiagram skipping.`);
             }
           } catch (error) {
             console.log("error");
