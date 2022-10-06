@@ -5,7 +5,7 @@ import figlet from "figlet";
 import path from "path";
 import { program } from "commander";
 import * as fs from "fs";
-import { GenerateSqlFromMermaid } from "./Library";
+import { WriteMermaidErDiagramsToSqlFiles } from "./Library";
 clear();
 console.log(
   chalk.red(
@@ -83,17 +83,13 @@ async function LoadMarkDownFile(
     }
     fileContents = await fs.readFileSync(inputInformation.src, "utf8");
   }
-  var test = 1 + 1;
-  // serialize to mermaid
-  // const contents = file.split('\n');
-  // contents.shift();
   return fileContents;
 }
 
 LoadMarkDownFile(markdownFileSettings)
   .then(async (contents) => {
     console.log("done loading file");
-    await GenerateSqlFromMermaid(contents, options.database).then((result) => {
+    await WriteMermaidErDiagramsToSqlFiles(contents, options.database).then((result) => {
       console.log(result);
       console.log("done generating sql");
     });
