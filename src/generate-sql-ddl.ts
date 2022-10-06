@@ -127,7 +127,7 @@ export class DbParser {
       }
     }
 
-    statement += `\n)`;
+    statement += `)\n\n`;
     return statement;
   }
 
