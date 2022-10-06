@@ -20,7 +20,12 @@ import { DiagramDefinition } from "./types";
 import { DbParser } from "./generate-sql-ddl";
 const diagrams: Record<string, DiagramDefinition> = {};
 
-export const erParser = async function () {
+/**
+ * get parser for converting erDiagram mermaid code snippet into mermaid database
+ * mermaid is currently using jison a format of bison
+ * @returns 
+ */
+export const erParser = function () {
   // generate new jison lexer
   // recommened way to just grab jison build from mermaid.core.js file
   // const jisonCode = await readFile(file, 'utf8');
@@ -70,19 +75,37 @@ export const getDiagram = (name: string): DiagramDefinition => {
   throw new Error(`Diagram ${name} not found.`);
 };
 
-const m: any = mermaid;
-
-// TODO: write files, vs return create statments?
 /**
  * parse markdown erDiagram mermaid in sql
  * @param fileContents
  * @returns
  */
-export const GenerateSqlFromMermaid = async function (
+export const WriteMermaidErDiagramsToSqlFiles= async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
-  const parser = await erParser();
+  var sqlOutputs = GenerateSqlFromMermaid(definition, databaseType);
+  for (const key in sqlOutputs) {
+    if (Object.prototype.hasOwnProperty.call(sqlOutputs, key)) {
+      await fs.promises.writeFile(key, sqlOutputs[key])
+    }
+  }
+
+  return "";
+}
+
+/**
+ * return an object of sql diagrams from mermaid erDiagrams markdown
+ * @param definition 
+ * @param databaseType 
+ * @returns 
+ */
+export const GenerateSqlFromMermaid = function (
+  definition: string,
+  databaseType: string
+): Record<string, string> {
+  const outputDiagrams: Record<string,string> = {}
+  const parser = erParser();
   registerDiagram(
     "er",
     {
@@ -95,12 +118,12 @@ export const GenerateSqlFromMermaid = async function (
   );
   if (mermaid) {
     try {
-      let config = {
-        theme: "forest",
-        sequence: {
-          showSequenceNumbers: true,
-        },
-      };
+      // let config = {
+      //   theme: "forest",
+      //   sequence: {
+      //     showSequenceNumbers: true,
+      //   },
+      // };
 
       // gra mermaid charts
       // from mermaid cli markdown parsing
@@ -150,7 +173,6 @@ export const GenerateSqlFromMermaid = async function (
           return mermaidMd;
         }
       );
-
       if (diagrams.length) {
         info(`Found ${diagrams.length} mermaid charts in Markdown input`);
         // await Promise.all(
@@ -185,7 +207,8 @@ export const GenerateSqlFromMermaid = async function (
                   ).getSQLDataDefinition();
 
                   // write to file
-                  await fs.promises.writeFile(imgFile, ddlSyntax)
+                  outputDiagrams[imgFile] = ddlSyntax;
+                  // await fs.promises.writeFile(imgFile, ddlSyntax)
                   info(` ✅ ${imgFile}`)
                 } else {
                   // should never hit b/c an error in parsing throws an exception
@@ -214,5 +237,5 @@ export const GenerateSqlFromMermaid = async function (
       console.log(JSON.stringify(error));
     }
   }
-  return "";
+  return outputDiagrams;
 };
