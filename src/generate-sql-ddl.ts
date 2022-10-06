@@ -119,20 +119,24 @@ export class DbParser {
         ).trim();
         if (attribute.attributeComment) {
           let attributeName = attribute.attributeName;
+          let attributeComment = attribute.attributeComment.trim();
           if (attribute.attributeComment.indexOf("'") != -1) {
             // extract
-            const testFullName = attribute.attributeComment.replace(
-              /(["']).*\1(?![^\s])/gim,
-              ""
+            const testFullNameMatches = attribute.attributeComment.match(
+              /(?<=((?<=[\s,.:;"']|^)["']))(?:(?=(\\?))\2.)*?(?=\1)/gmu
             );
-            if (testFullName) {
-              attributeName = testFullName;
+            if (testFullNameMatches && testFullNameMatches.length > 0) {
+              attributeName = testFullNameMatches[0];
+              attributeComment = attributeComment
+                .replace(`'${attributeName}'`, "")
+                .trim();
             }
           }
+          if (attributeComment) attributeComment = " " + attributeComment;
           // check if contains full column name
-          statement += `\t${this.dbTypeEnds(attributeName)} ${columnType} ${
-            attribute.attributeComment
-          }`;
+          statement += `\t${this.dbTypeEnds(
+            attributeName
+          )} ${columnType}${attributeComment}`;
           if (
             attribute.attributeKeyType &&
             attribute.attributeKeyType == "PK"
