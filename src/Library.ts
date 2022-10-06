@@ -200,6 +200,7 @@ export const GenerateSqlFromMermaid = function (
                 diag = getDiagram(type);
                 var r: boolean = diag.parser.parse(md);
                 if (r) {
+                  const sqlHeader = getSqlHeader(databaseType)
                   // models to sql
                   const ddlSyntax = new DbParser(
                     databaseType,
@@ -207,7 +208,7 @@ export const GenerateSqlFromMermaid = function (
                   ).getSQLDataDefinition();
 
                   // write to file
-                  outputDiagrams[imgFile] = ddlSyntax;
+                  outputDiagrams[imgFile] = sqlHeader + ddlSyntax;
                   // await fs.promises.writeFile(imgFile, ddlSyntax)
                   info(` ✅ ${imgFile}`)
                 } else {
@@ -239,3 +240,14 @@ export const GenerateSqlFromMermaid = function (
   }
   return outputDiagrams;
 };
+
+import packageJson from "../package.json";
+
+/**
+ * get package header in generated sql
+ * @param dbType 
+ * @returns 
+ */
+function getSqlHeader(dbType:string):string {
+  return `/*\nsql generated using:\n * Package: ${packageJson.name}\n * Version: ${packageJson.version}\n * databaseInfo: ${dbType}\n*/\n\n`
+}
