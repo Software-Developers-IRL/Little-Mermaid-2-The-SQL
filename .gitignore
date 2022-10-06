@@ -110,3 +110,4 @@ samples/*.sql
 samples/*/*.sql
 junit.xml
 *.bak
+output-*.sql
