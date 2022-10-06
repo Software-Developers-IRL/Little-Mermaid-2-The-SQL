@@ -165,6 +165,57 @@ export class DbParser {
       }
       statement += ")";
     }
+    // foreign keys
+    let entityFKeys = this.relationships.filter(
+      (relation) => relation.entityB == entityKey
+    );
+    if (entityFKeys.length > 0) {
+      for (let i = 0; i < entityFKeys.length; i++) {
+        const fk = entityFKeys[i];
+        const fkRelTxt = fk.roleA;
+        // must match format "[..] to [..]"
+        const keySplit = "] to [";
+        if (
+          fkRelTxt.indexOf(keySplit) != -1 &&
+          fkRelTxt[0] == "[" &&
+          fkRelTxt[fkRelTxt.length - 1] == "]"
+        ) {
+          let keys = fkRelTxt.substring(1, fkRelTxt.length - 2).split(keySplit);
+          let fkCol = keys[1];
+          if (fkCol.indexOf(".") != -1) {
+            fkCol = fkCol.split(".")[1];
+          }
+          let pkCol = keys[0];
+          if (pkCol.indexOf(".") != -1) {
+            pkCol = pkCol.split(".")[1];
+          }
+          // FOREIGN KEY (`Artist Id`) REFERENCES `Artist`(`ArtistId`)
+          statement += `,\n\tFOREIGN KEY (${this.dbTypeEnds(
+            fkCol
+          )}) REFERENCES ${this.dbTypeEnds(fk.entityA)}(${this.dbTypeEnds(
+            pkCol
+          )})`;
+        }
+        // const keys = fk.roleA.match(
+        //   /(?<=((?<=[\s,.:;\[]|^)[/]]))(?:(?=(\\?))\2.)*?(?=\1)/gmu
+        // );
+
+        // const keys2 = fk.roleA.match(
+        //   /\[(.*)\]/gmu
+        // );
+        // const keys3 = fk.roleA.replace(
+        //   /\[(.*)\]/gmu,""
+        // );
+        // const keys4 = fk.roleA.match(
+        //   /\[.*\]/gmu
+        // );
+        // const keys5 = fk.roleA.match(
+        //   /(?<=\[).*(?=\])/gmu
+        // );
+        let test = 1 + 1;
+      }
+    }
+
     if (attributesAdded != 0) {
       statement += "\n";
     }
