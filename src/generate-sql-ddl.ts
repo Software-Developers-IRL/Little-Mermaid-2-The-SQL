@@ -21,7 +21,7 @@ export class DbParser {
   private symbols = ["INTEGER", "NVARCHAR", "DATETIME", "NUMERIC"];
   private db: DbDefinition;
   private dbType: string;
-  private dataDefinitions!: Array<string>;
+  // private dataDefinitions!: Array<string>;
   private entities!: Record<string, DbEntityDefinition>;
   private relationships!: DbRelationshipDefinition[];
 
@@ -36,11 +36,6 @@ export class DbParser {
   public getSQLDataDefinition() {
     this.entities = this.db.getEntities();
     this.relationships = this.db.getRelationships();
-    // const tokens = this.ast.trim().split(" ");
-    // console.log(tokens);
-    // if(tokens[0] !== 'erDiagram'){
-    //     throw 'Expecting erDiagram keyword';
-    // }
     return this.lexer();
   }
 
@@ -54,27 +49,6 @@ export class DbParser {
         }
       }
     }
-    // for(let i = 1; i < tokens.length; i++){
-    //     if(this.symbols.includes(tokens[i])){
-    //         throw `Keyword reserved '${tokens[i]}'`;
-    //     }
-    //     const tableName = tokens[i];
-    //     i++;
-    //     if(tokens[i] !== "{"){
-    //         throw `Expecting '{' got : '${tokens[i]}'`;
-    //     }
-    //     i++;
-    //     while(tokens[i] !== '}' && i < tokens.length){
-    //         if(!this.symbols.includes(tokens[i])){
-    //             throw `Expecting keyword got : '${tokens[i]}'`;
-    //         }
-    //         const dataType = tokens[i];
-    //         i++;
-    //         statementGeneration.push(this.createColumn(tableName, tokens[i], dataType));
-    //         i++;
-    //     }
-    //     statementGeneration.unshift(this.createTable(tableName));
-    // }
     return statementGeneration.join("");
   }
   /**
@@ -96,13 +70,13 @@ export class DbParser {
   }
   /**
    * generate create table statement
+   * also includes primary keys and foreign keys
    * @param entityKey
    * @param entity
    * @returns
    */
   private createTable(entityKey: string, entity: DbEntityDefinition) {
     let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (`;
-    // TODO: incorporate foreign keys using relationships
     let primaryKeys: string[] = [];
     let attributesAdded = 0;
     for (let i = 0; i < entity.attributes.length; i++) {
@@ -165,6 +139,44 @@ export class DbParser {
       }
       statement += ")";
     }
+    // foreign keys
+    let entityFKeys = this.relationships.filter(
+      (relation) => relation.entityB == entityKey
+    );
+    if (entityFKeys.length > 0) {
+      for (let i = 0; i < entityFKeys.length; i++) {
+        const fk = entityFKeys[i];
+        const fkRelTxt = fk.roleA;
+        // must match format "[..] to [..]"
+        const keySplit = "] to [";
+        if (
+          fkRelTxt.indexOf(keySplit) != -1 &&
+          fkRelTxt[0] == "[" &&
+          fkRelTxt[fkRelTxt.length - 1] == "]"
+        ) {
+          let keys = fkRelTxt.substring(1, fkRelTxt.length - 1).split(keySplit);
+          // remove quotes
+          let fkCol = keys[1].replace(/[\'\"]/gim,"");
+          if (fkCol.indexOf(".") != -1) {
+            fkCol = fkCol.split(".")[1];
+          }
+          fkCol = fkCol.trim();
+          let pkCol = keys[0].replace(/[\'\"]/gim,"");
+          if (pkCol.indexOf(".") != -1) {
+            pkCol = pkCol.split(".")[1];
+          }
+          pkCol = pkCol.trim();
+          // FOREIGN KEY (`Artist Id`) REFERENCES `Artist`(`ArtistId`)
+          statement += `,\n\tFOREIGN KEY (${this.dbTypeEnds(
+            fkCol
+          )}) REFERENCES ${this.dbTypeEnds(fk.entityA)}(${this.dbTypeEnds(
+            pkCol
+          )})`;
+        }
+        let test = 1 + 1;
+      }
+    }
+
     if (attributesAdded != 0) {
       statement += "\n";
     }
