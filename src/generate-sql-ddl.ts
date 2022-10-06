@@ -14,7 +14,9 @@ class Node<T> {
   public prev: Node<T> | null = null;
   constructor(public data: T) {}
 }
-
+/**
+ * Mermaid Models TO SQL parser
+ */
 export class DbParser {
   private symbols = ["INTEGER", "NVARCHAR", "DATETIME", "NUMERIC"];
   private db: DbDefinition;
@@ -27,7 +29,10 @@ export class DbParser {
     this.db = db;
     this.dbType = dbType;
   }
-
+  /**
+   * return sql from mermaid erDiagram db models
+   * @returns 
+   */
   public getSQLDataDefinition() {
     this.entities = this.db.getEntities();
     this.relationships = this.db.getRelationships();
