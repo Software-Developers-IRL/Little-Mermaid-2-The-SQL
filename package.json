@@ -1,5 +1,5 @@
 {
-  "name": "little-mermaid-2-the-sql",
+  "name": "@funktechno/little-mermaid-2-the-sql",
   "version": "0.0.3",
   "description": "",
   "main": "./lib/index.js",
