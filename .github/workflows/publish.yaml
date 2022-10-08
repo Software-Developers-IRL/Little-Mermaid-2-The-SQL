@@ -2,12 +2,6 @@ name: Publish Package to npmjs
 on:
   release:
     types: [created]
-on:
-  workflow_dispatch:
-  push:
-    branches:
-      - main
-  pull_request:
 
 jobs:
   build:
