@@ -173,7 +173,6 @@ export class DbParser {
             pkCol
           )})`;
         }
-        let test = 1 + 1;
       }
     }
 
@@ -181,7 +180,7 @@ export class DbParser {
       statement += "\n";
     }
 
-    statement += `)\n\n`;
+    statement += `);\n\n`;
     return statement;
   }
 
