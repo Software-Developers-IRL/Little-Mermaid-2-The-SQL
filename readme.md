@@ -2,7 +2,7 @@
 * a command line tool for generating create sql from mermaid erDiagram
 
 ## Getting Started
-1. `npm install -g @irl/little-mermaid-2-the-sql`
+1. `npm install -g @funktechno/little-mermaid-2-the-sql`
 1. `npm run littleMermaid2SQL -- -d dbType --src markdownFilePath`
 
 ## Generating Mermaid erDiagram
