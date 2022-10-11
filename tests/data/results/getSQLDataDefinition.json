@@ -1,3 +1,3 @@
 {
-    "Generate DDL examples Should generate create table SQL syntax": "CREATE TABLE \"Persons\" (\n\t\"City\" varchar(255),\n\t\"Address\" varchar(255),\n\t\"FirstName\" varchar(255),\n\t\"LastName\" varchar(255),\n\t\"PersonID\" int NOT NULL,\n\tPRIMARY KEY(\"PersonID\")\n);\n\nCREATE TABLE \"Orders\" (\n\t\"PersonID\" int NOT NULL,\n\t\"OrderID\" int NOT NULL,\n\tPRIMARY KEY(\"OrderID\")\n);\n\n"
+    "Generate DDL examples Should generate create table SQL syntax": "CREATE TABLE \"Persons\" (\n\t\"City\" varchar(255),\n\t\"Address\" varchar(255),\n\t\"FirstName\" varchar(255),\n\t\"LastName\" varchar(255),\n\t\"PersonID\" int NOT NULL,\n\tPRIMARY KEY(\"PersonID\")\n);\n\nCREATE TABLE \"Orders\" (\n\t\"PersonID\" int NOT NULL,\n\t\"OrderID\" int NOT NULL,\n\tPRIMARY KEY(\"OrderID\"),\n\tFOREIGN KEY (\"PersonId\") REFERENCES \"Persons\"(\"PersonId\")\n);\n\n"
 }

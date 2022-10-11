@@ -2,6 +2,7 @@ import { DbParser } from "../../src/generate-sql-ddl";
 import erDb from "../../src/mermaid/src/diagrams/er/erDb";
 import { DbEntityAttributesDefinition, DbRelSpec } from "../../src/types";
 import { getExpected, updateExpected } from "../utils/helper";
+import * as fs from "fs";
 
 const dataSource = "getSQLDataDefinition";
 describe("Generate DDL examples", () => {
@@ -59,7 +60,7 @@ describe("Generate DDL examples", () => {
       relType: "IDENTIFYING"
     };
 
-    db.addRelationship("Persons", entityName,`[Persons.PersonId] to [${entityName}.PersonId]`, relSpec);
+    db.addRelationship("Persons", `[Persons.PersonId] to [${entityName}.PersonId]`,entityName, relSpec);
     // `erDiagram artists { }`;
     const ddlSyntax = new DbParser("sqlite", db).getSQLDataDefinition();
 
@@ -74,5 +75,10 @@ describe("Generate DDL examples", () => {
     // console.log(result);
     expect(ddlSyntax).toStrictEqual(expectedResult);
     // expect(ddlSyntax).toBe('CREATE TABLE artists');
+
+    // await fs.writeFileSync(
+    //   "output-sqlite.sql",
+    //   ddlSyntax
+    // );
   });
 });
