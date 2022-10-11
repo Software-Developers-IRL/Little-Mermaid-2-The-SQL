@@ -17,6 +17,13 @@
    1. sqlite `npm run littleMermaid2SQL -- -d sqlite --src samples/chinook-database-2.0.1.md`
    1. postgres `npm run littleMermaid2SQL -- -d postgres --src samples/Adventureworks_pg.md`
    1. mysql `npm run littleMermaid2SQL -- -d mysql --src samples/Adventureworks_mysql.md`
+4. Force uninstall
+  * `npm uninstall -g little-mermaid-2-the-sql`
+  * `npm list -g`
+  * `littleMermaid2SQL --help`
+5. test package
+  * update .npmignore
+  * run `npm pack` unzip contents and verify, node_modules are not required b/c they will be installed with package.json
 
 ### Technologies 
 * [esLint](https://eslint.org/)

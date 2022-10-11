@@ -1,6 +1,6 @@
 {
   "name": "@funktechno/little-mermaid-2-the-sql",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "./lib/index.js",
   "engines": {
@@ -11,9 +11,10 @@
   },
   "scripts": {
     "start": "node index.mjs",
-    "littleMermaid2SQL": "npm run build && littleMermaid2SQL",
-    "cli:help": "npm i --force -g && littleMermaid2SQL --help",
-    "cli:test": "npm i --force -g && littleMermaid2SQL",
+    "littleMermaid2SQL": "npm run build && npm i --force -g && littleMermaid2SQL",
+    "cli:help": "npm run build && npm i --force -g && littleMermaid2SQL --help",
+    "cli:test": "npm run build && npm i --force -g && littleMermaid2SQL",
+    "cli:remove": "npm uninstall -g",
     "test": "jest",
     "lint": "eslint",
     "create": "npm run build && npm run cli:test",
