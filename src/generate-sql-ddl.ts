@@ -4,16 +4,6 @@ import {
   DbRelationshipDefinition,
 } from "./types";
 
-interface Table {
-  name: string;
-  columns: string[];
-}
-
-class Node<T> {
-  public next: Node<T> | null = null;
-  public prev: Node<T> | null = null;
-  constructor(public data: T) {}
-}
 /**
  * Mermaid Models TO SQL parser
  */
@@ -40,7 +30,7 @@ export class DbParser {
   }
 
   private lexer(): string {
-    let statementGeneration: Array<string> = [];
+    const statementGeneration: Array<string> = [];
     if (this.entities) {
       for (const key in this.entities) {
         if (Object.prototype.hasOwnProperty.call(this.entities, key)) {
@@ -57,8 +47,8 @@ export class DbParser {
    * @returns
    */
   private dbTypeEnds(label: string) {
-    let char1 = '"';
-    let char2 = '"';
+    let char1 = "\"";
+    let char2 = "\"";
     if (this.dbType == "mysql") {
       char1 = "`";
       char2 = "`";
@@ -77,7 +67,7 @@ export class DbParser {
    */
   private createTable(entityKey: string, entity: DbEntityDefinition) {
     let statement = `CREATE TABLE ${this.dbTypeEnds(entityKey)} (`;
-    let primaryKeys: string[] = [];
+    const primaryKeys: string[] = [];
     let attributesAdded = 0;
     for (let i = 0; i < entity.attributes.length; i++) {
       const attribute = entity.attributes[i];
@@ -86,7 +76,7 @@ export class DbParser {
         attributesAdded++;
         // need to add parenthesis or commas
         let columnType = attribute.attributeType.replace("_", ",");
-        let columnTypeLength = columnType.replace(/[^0-9,]/gim, "");
+        const columnTypeLength = columnType.replace(/[^0-9,]/gim, "");
         columnType = (
           columnType.replace(/[^a-zA-Z]/gim, "") +
           (columnTypeLength ? `(${columnTypeLength})` : "")
@@ -134,13 +124,12 @@ export class DbParser {
     if (primaryKeys.length > 0) {
       statement += ",\n\tPRIMARY KEY(";
       for (let i = 0; i < primaryKeys.length; i++) {
-        const element = primaryKeys[i];
         statement += (i == 0 ? "" : ",") + this.dbTypeEnds(primaryKeys[i]);
       }
       statement += ")";
     }
     // foreign keys
-    let entityFKeys = this.relationships.filter(
+    const entityFKeys = this.relationships.filter(
       (relation) => relation.entityB == entityKey
     );
     if (entityFKeys.length > 0) {
@@ -154,7 +143,7 @@ export class DbParser {
           fkRelTxt[0] == "[" &&
           fkRelTxt[fkRelTxt.length - 1] == "]"
         ) {
-          let keys = fkRelTxt.substring(1, fkRelTxt.length - 1).split(keySplit);
+          const keys = fkRelTxt.substring(1, fkRelTxt.length - 1).split(keySplit);
           // remove quotes
           let fkCol = keys[1].replace(/[\'\"]/gim,"");
           if (fkCol.indexOf(".") != -1) {
@@ -180,7 +169,7 @@ export class DbParser {
       statement += "\n";
     }
 
-    statement += `);\n\n`;
+    statement += ");\n\n";
     return statement;
   }
 

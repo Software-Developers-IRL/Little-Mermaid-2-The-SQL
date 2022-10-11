@@ -1,5 +1,3 @@
-import { MermaidConfig } from "../../deps/mermaid/src/config.type";
-
 /**
  * diagram definition, don't need renderer or styles
  */

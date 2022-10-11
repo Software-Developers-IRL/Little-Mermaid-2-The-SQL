@@ -3,7 +3,7 @@ import mermaid from "mermaid";
 import path from "path";
 import { erDetector } from "../deps/mermaid/src/diagrams/er/erDetector";
 import {
-  jisonCode,
+  // jisonCode,
   erParser2,
 } from "./mermaid/src/diagrams/er/parser/erDiagram";
 // const jison = require("jison");
@@ -29,7 +29,6 @@ export const erParser = function () {
   // generate new jison lexer
   // recommened way to just grab jison build from mermaid.core.js file
   // const jisonCode = await readFile(file, 'utf8');
-  // @ts-ignore no typings
   /*
   const raw = jisonCode;
   const parser = new jison.Generator(raw, {
@@ -84,15 +83,15 @@ export const WriteMermaidErDiagramsToSqlFiles= async function (
   definition: string,
   databaseType: string
 ): Promise<string> {
-  var sqlOutputs = GenerateSqlFromMermaid(definition, databaseType);
+  const sqlOutputs = GenerateSqlFromMermaid(definition, databaseType);
   for (const key in sqlOutputs) {
     if (Object.prototype.hasOwnProperty.call(sqlOutputs, key)) {
-      await fs.promises.writeFile(key, sqlOutputs[key])
+      await fs.promises.writeFile(key, sqlOutputs[key]);
     }
   }
 
   return "";
-}
+};
 
 /**
  * return an object of sql diagrams from mermaid erDiagrams markdown
@@ -104,7 +103,7 @@ export const GenerateSqlFromMermaid = function (
   definition: string,
   databaseType: string
 ): Record<string, string> {
-  const outputDiagrams: Record<string,string> = {}
+  const outputDiagrams: Record<string,string> = {};
   const parser = erParser();
   registerDiagram(
     "er",
@@ -135,8 +134,8 @@ export const GenerateSqlFromMermaid = function (
         "gm"
       );
       const mermaidChartsInMarkdownRegex = new RegExp(mermaidChartsInMarkdown);
-      var output = "output.sql";
-      var outputFormat: string = "";
+      const output = "output.sql";
+      let outputFormat = "";
       if (!outputFormat) {
         outputFormat = path.extname(output).replace(".", "");
       }
@@ -145,13 +144,13 @@ export const GenerateSqlFromMermaid = function (
         outputFormat = "sql";
       }
       if (!/(?:sql)$/.test(outputFormat)) {
-        throw new Error('Output format must be one of "sql"');
+        throw new Error("Output format must be one of \"sql\"");
       }
       const diagrams: string[][] = [];
       const outDefinition = definition.replace(
         mermaidChartsInMarkdownRegexGlobal,
         (mermaidMd) => {
-          var regexResult = mermaidChartsInMarkdownRegex.exec(mermaidMd);
+          const regexResult = mermaidChartsInMarkdownRegex.exec(mermaidMd);
           if (regexResult != null) {
             const md = regexResult[1];
 
@@ -178,29 +177,30 @@ export const GenerateSqlFromMermaid = function (
         // await Promise.all(
         diagrams.map(async ([imgFile, md]) => {
           try {
-            let m = mermaid;
+            const m = mermaid;
             // TODO: future if diagrams were exposed these might work
             // let c1 = m.mermaidAPI.getConfig();
             // let c2 = m.mermaidAPI.getConfig();
             // m.mermaidAPI.initialize(c1)
             // // let diags = m.diagrams
-            var test = m.mermaidAPI.parse(md);
+            const test = m.mermaidAPI.parse(md);
             if (!test) {
               // not valid mermaid, console log?
               // will usually throw error
               return;
             }
-            var isEr = erDetector(md);
+            const isEr = erDetector(md);
+            const type = detectType(md);
             if (isEr) {
               let diag;
               let parseEncounteredException;
               const type = detectType(md);
-              console.log(`d type:${type}`);
+              // console.log(`Diagram type:${type}`);
               try {
                 diag = getDiagram(type);
-                var r: boolean = diag.parser.parse(md);
+                const r: boolean = diag.parser.parse(md);
                 if (r) {
-                  const sqlHeader = getSqlHeader(databaseType)
+                  const sqlHeader = getSqlHeader(databaseType);
                   // models to sql
                   const ddlSyntax = new DbParser(
                     databaseType,
@@ -210,7 +210,7 @@ export const GenerateSqlFromMermaid = function (
                   // write to file
                   outputDiagrams[imgFile] = sqlHeader + ddlSyntax;
                   // await fs.promises.writeFile(imgFile, ddlSyntax)
-                  info(` ✅ ${imgFile}`)
+                  info(` ✅ File:"${imgFile}" Type:"${type}"`);
                 } else {
                   // should never hit b/c an error in parsing throws an exception
                   console.log(`Error parsing erDiagram of:${imgFile}`);
@@ -222,7 +222,7 @@ export const GenerateSqlFromMermaid = function (
               if (parseEncounteredException)
                 console.log(parseEncounteredException);
             } else {
-              console.log(`${imgFile} is not an erDiagram skipping.`);
+              console.log(` ❌ File:"${imgFile}" Type:"${type}" is not an erDiagram skipping.`);
             }
           } catch (error) {
             console.log("error");
@@ -249,5 +249,5 @@ import packageJson from "../package.json";
  * @returns 
  */
 function getSqlHeader(dbType:string):string {
-  return `/*\nsql generated using:\n * Package: ${packageJson.name}\n * Version: ${packageJson.version}\n * databaseInfo: ${dbType}\n*/\n\n`
+  return `/*\nsql generated using:\n * Package: ${packageJson.name}\n * Version: ${packageJson.version}\n * databaseInfo: ${dbType}\n*/\n\n`;
 }

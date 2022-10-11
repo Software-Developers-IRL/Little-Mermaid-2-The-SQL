@@ -61,7 +61,7 @@ interface MarkdownInputSettingsI {
   isRaw: boolean;
 }
 
-var markdownFileSettings: MarkdownInputSettingsI = {
+const markdownFileSettings: MarkdownInputSettingsI = {
   src,
   isRaw,
 };
@@ -77,7 +77,7 @@ async function LoadMarkDownFile(
   if (inputInformation.isRaw) {
     fileContents = inputInformation.src;
   } else {
-    var fileExists = await fs.existsSync(inputInformation.src);
+    const fileExists = await fs.existsSync(inputInformation.src);
     if (!fileExists) {
       throw new Error(`src:${inputInformation.src}, does not exist`);
     }
