@@ -717,7 +717,7 @@
       adventureworks_employee ||--o{ adventureworks_jobcandidate : "[adventureworks_employee.EmployeeID] to [adventureworks_jobcandidate.EmployeeID]"
 
       adventureworks_productmodel ||--o{ adventureworks_product : "[adventureworks_productmodel.ProductModelID] to [adventureworks_product.ProductModelID]"
-```
+    ```
 * Diagram-2
     ```mermaid
     erDiagram
