@@ -47,7 +47,7 @@ const addEntity = function (name: string) {
 const getEntities = () => entities;
 
 const addAttributes = function (entityName: string, attribs: DbEntityAttributesDefinition[]) {
-  let entity = addEntity(entityName); // May do nothing (if entity has already been added)
+  const entity = addEntity(entityName); // May do nothing (if entity has already been added)
 
   // Process attribs in reverse order due to effect of recursive construction (last attribute is first)
   let i;
@@ -71,7 +71,7 @@ const addRelationship = function (
   entB: string,
   rSpec: string
 ) {
-  let rel: DbRelationshipDefinition = {
+  const rel: DbRelationshipDefinition = {
     entityA: entA,
     roleA: rolA,
     entityB: entB,

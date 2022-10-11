@@ -182,7 +182,9 @@ closeDirective
 
 export const erParser2 = require("./parser.js");
 
-export const erParser = function(){}
+// export const erParser2 = import('./parser.js')
+
+export const erParser = function(){};
 // export default {
 //   jisonCode,
 // };

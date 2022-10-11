@@ -101,8 +101,7 @@ typings/
 
 # TernJS port file
 .tern-port
-deps/mermaid/*
-!deps/mermaid/src
+deps
 samples/output*.md
 samples/raw*.txt
 samples/*.sql
@@ -111,3 +110,5 @@ junit.xml
 *.bak
 output-*.sql
 tests
+build
+funktechno-little-mermaid-2-the-sql*

@@ -1,8 +1,9 @@
 {
   "name": "@funktechno/little-mermaid-2-the-sql",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "description": "",
   "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "engines": {
     "node": "16.x"
   },
@@ -15,11 +16,17 @@
     "cli:help": "npm run build && npm i --force -g && littleMermaid2SQL --help",
     "cli:test": "npm run build && npm i --force -g && littleMermaid2SQL",
     "cli:remove": "npm uninstall -g",
-    "test": "jest",
-    "lint": "eslint",
+    "test": "jest -c ./jest.config.ts --forceExit --verbose -i --no-cache --detectOpenHandles",
+    "test:coverage": "jest --forceExit --coverage --verbose --detectOpenHandles",
+    "test:watch": "jest --watchAll --detectOpenHandles",
+    "lint": "tsc --noEmit && eslint \"{src,client}/**/*.{js,ts}\"",
+    "lint:fix": "tsc --noEmit && eslint \"{src,client}/**/*.{js,ts}\" --fix",
     "create": "npm run build && npm run cli:test",
-    "build": "tsc",
-    "build:client": "browserify src/index.ts -p [ tsify --noImplicitAny ] > dist/littleMermaid.js"
+    "build": "tsc && npm run build:types",
+    "build:types": "tsc -p tsconfig-types.json",
+    "build:help": "tsc --help",
+    "build:client": "npm run mkdir:dist && browserify src/index.ts -p [ tsify --noImplicitAny ] > dist/littleMermaid.js",
+    "mkdir:dist": "node ./build/createDistFolder.js"
   },
   "repository": {
     "type": "git",
