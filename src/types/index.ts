@@ -1,3 +1,15 @@
+export interface MarkdownInputSettingsI {
+  src: string;
+  isRaw: boolean;
+  outputName: string; 
+  database: string;
+}
+
+export interface MarkdownContentResponseI {
+  content: string;
+  settings: MarkdownInputSettingsI;
+}
+
 /**
  * diagram definition, don't need renderer or styles
  */

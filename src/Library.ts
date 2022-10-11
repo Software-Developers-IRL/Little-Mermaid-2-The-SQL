@@ -16,7 +16,7 @@ import {
 } from "../deps/mermaid/src/diagram-api/detectType";
 import { log } from "../deps/mermaid/src/logger";
 import erDb from "./mermaid/src/diagrams/er/erDb";
-import { DiagramDefinition } from "./types";
+import { DiagramDefinition, MarkdownContentResponseI } from "./types";
 import { DbParser } from "./generate-sql-ddl";
 const diagrams: Record<string, DiagramDefinition> = {};
 
@@ -80,10 +80,9 @@ export const getDiagram = (name: string): DiagramDefinition => {
  * @returns
  */
 export const WriteMermaidErDiagramsToSqlFiles= async function (
-  definition: string,
-  databaseType: string
+  markdownContent: MarkdownContentResponseI
 ): Promise<string> {
-  const sqlOutputs = GenerateSqlFromMermaid(definition, databaseType);
+  const sqlOutputs = GenerateSqlFromMermaid(markdownContent);
   for (const key in sqlOutputs) {
     if (Object.prototype.hasOwnProperty.call(sqlOutputs, key)) {
       await fs.promises.writeFile(key, sqlOutputs[key]);
@@ -100,8 +99,7 @@ export const WriteMermaidErDiagramsToSqlFiles= async function (
  * @returns 
  */
 export const GenerateSqlFromMermaid = function (
-  definition: string,
-  databaseType: string
+  markdownContent: MarkdownContentResponseI
 ): Record<string, string> {
   const outputDiagrams: Record<string,string> = {};
   const parser = erParser();
@@ -134,7 +132,7 @@ export const GenerateSqlFromMermaid = function (
         "gm"
       );
       const mermaidChartsInMarkdownRegex = new RegExp(mermaidChartsInMarkdown);
-      const output = "output.sql";
+      const output = `${markdownContent.settings.outputName}.sql`;
       let outputFormat = "";
       if (!outputFormat) {
         outputFormat = path.extname(output).replace(".", "");
@@ -147,7 +145,7 @@ export const GenerateSqlFromMermaid = function (
         throw new Error("Output format must be one of \"sql\"");
       }
       const diagrams: string[][] = [];
-      const outDefinition = definition.replace(
+      const outDefinition = markdownContent.content.replace(
         mermaidChartsInMarkdownRegexGlobal,
         (mermaidMd) => {
           const regexResult = mermaidChartsInMarkdownRegex.exec(mermaidMd);
@@ -200,10 +198,10 @@ export const GenerateSqlFromMermaid = function (
                 diag = getDiagram(type);
                 const r: boolean = diag.parser.parse(md);
                 if (r) {
-                  const sqlHeader = getSqlHeader(databaseType);
+                  const sqlHeader = getSqlHeader(markdownContent.settings.database);
                   // models to sql
                   const ddlSyntax = new DbParser(
-                    databaseType,
+                    markdownContent.settings.database,
                     diag.db
                   ).getSQLDataDefinition();
 
