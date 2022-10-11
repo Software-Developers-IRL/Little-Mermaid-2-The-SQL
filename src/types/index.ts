@@ -24,7 +24,7 @@ export interface DiagramDefinition {
 export interface DbEntityAttributesDefinition {
   attributeType?: string;
   attributeName?: string;
-  attributeKeyType?: string;
+  attributeKeyType?: "PK" | "FK";
   attributeComment?: string;
 }
 
@@ -32,24 +32,30 @@ export interface DbEntityDefinition {
   attributes: DbEntityAttributesDefinition[];
 }
 
+export interface DbRelSpec {
+  cardA: string;
+  cardB: string;
+  relType: string;
+}
+
 export interface DbRelationshipDefinition {
   entityA: string;
   roleA: string;
   entityB: string;
-  relSpec: string;
+  relSpec: DbRelSpec;
 }
 
 export interface DbDefinition {
   Cardinality: Record<string, string>;
   Identification: Record<string, string>;
   addEntity: (name: string) => void;
-  addAttributes: (entityName: string, attribs: any[]) => void;
+  addAttributes: (entityName: string, attribs: DbEntityAttributesDefinition[]) => void;
   getEntities: () => Record<string, DbEntityDefinition>;
   addRelationship: (
     entA: string,
     rolA: string,
     entB: string,
-    rSpec: string
+    rSpec: DbRelSpec
   ) => void;
   getRelationships: () => DbRelationshipDefinition[];
   clear: () => void;
