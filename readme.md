@@ -3,7 +3,8 @@
 
 ## Getting Started
 1. `npm install -g @funktechno/little-mermaid-2-the-sql`
-1. `npm run littleMermaid2SQL -- -d dbType --src markdownFilePath`
+1. `littleMermaid2SQL --help`
+1. `littleMermaid2SQL -d dbType --src markdownFilePath`
 
 ## Generating Mermaid erDiagram
 * see [samples](./samples/readme.md) for more information
