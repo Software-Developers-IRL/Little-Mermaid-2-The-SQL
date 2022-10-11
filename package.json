@@ -22,14 +22,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mbuchoff/Little-Mermaid-2-The-SQL.git"
+    "url": "git+https://github.com/Software-Developers-IRL/Little-Mermaid-2-The-SQL.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/mbuchoff/Little-Mermaid-2-The-SQL/issues"
+    "url": "https://github.com/Software-Developers-IRL/Little-Mermaid-2-The-SQL/issues"
   },
-  "homepage": "https://github.com/mbuchoff/Little-Mermaid-2-The-SQL#readme",
+  "homepage": "https://github.com/Software-Developers-IRL/Little-Mermaid-2-The-SQL#readme",
   "devDependencies": {
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
