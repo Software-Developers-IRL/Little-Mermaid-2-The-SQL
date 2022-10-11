@@ -42,11 +42,11 @@
     "@types/clear": "^0.1.2",
     "@types/figlet": "^1.5.5",
     "@types/jest": "^29.0.3",
+    "@types/lodash": "^4.14.185",
     "@types/mermaid": "^9.1.0",
     "@types/node": "^18.7.18",
     "@typescript-eslint/eslint-plugin": "^5.37.0",
     "@typescript-eslint/parser": "^5.37.0",
-    "@types/lodash": "^4.14.185",
     "browserify": "^17.0.0",
     "dompurify": "2.4.0",
     "eslint": "^8.23.1",
@@ -58,16 +58,15 @@
     "typescript": "^4.8.3"
   },
   "dependencies": {
-    "@mermaid-js/mermaid-cli": "^9.1.6",
+    "@types/dompurify": "^2.3.4",
     "chalk": "^4.1.0",
     "clear": "^0.1.0",
-    "jison": "^0.4.18",
-    "lodash": "^4.17.21",
-    "@types/dompurify": "^2.3.4",
-    "moment-mini": "^2.24.0",
     "commander": "^7.1.0",
     "figlet": "^1.5.0",
+    "jison": "^0.4.18",
+    "lodash": "^4.17.21",
     "mermaid": "^9.1.7",
+    "moment-mini": "^2.24.0",
     "path": "^0.12.7"
   }
 }
