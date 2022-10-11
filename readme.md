@@ -24,6 +24,7 @@
 5. test package
   * update .npmignore
   * run `npm pack` unzip contents and verify, node_modules are not required b/c they will be installed with package.json
+  * `npm unpublish @funktechno/little-mermaid-2-the-sql@0.0.5` can only work within 1 week of publish, not very useful b/c not possible to republish an unpublished version
 
 ### Technologies 
 * [esLint](https://eslint.org/)
