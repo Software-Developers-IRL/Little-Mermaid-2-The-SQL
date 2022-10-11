@@ -9,6 +9,131 @@
 ## Generating Mermaid erDiagram
 * see [samples](./samples/readme.md) for more information
 
+## Ala Cart
+1. `npm install --save @funktechno/little-mermaid-2-the-sql`
+1. Example
+    * from markdown content
+      ```typescript
+      import { GenerateSqlFromMermaid } from "@funktechno/little-mermaid-2-the-sql/lib/src/Library";
+      import { MarkdownContentResponseI } from "@funktechno/little-mermaid-2-the-sql/lib/src/types";
+
+      
+      const markdownContent:MarkdownContentResponseI ={
+        settings: {
+            database: "postgres",
+            outputName: "result",
+            isRaw: false,
+            src: ""
+        },
+        content:`
+        #Test
+        \`\`\`mermaid
+        erDiagram
+            %% comment 1
+            Persons {
+                int PersonID PK "NOT NULL"
+                varchar255 LastName
+                varchar255 FirstName
+                varchar255 Address
+                varchar255 City
+            }
+
+            %% comment 2
+            Orders {
+                int OrderID PK "NOT NULL"
+                int PersonID FK "NOT NULL"
+            }
+  
+            Persons ||--o{ Orders : "[Persons.PersonId] to [Orders.PersonId]"
+        \`\`\`
+        `
+      };
+
+      const sqlOutputs = GenerateSqlFromMermaid(markdownContent);
+      ```
+
+    * manual mermaid db model
+      ```typescript
+      import { DbParser } from "@funktechno/little-mermaid-2-the-sql/lib/src/generate-sql-ddl";
+      import erDb from "@funktechno/little-mermaid-2-the-sql/lib/src/mermaid/src/diagrams/er/erDb";
+
+      const db = erDb;
+
+      let entityName = "Persons";
+      // load mermaid db with entities
+      db.addEntity(entityName);
+      let attributes:DbEntityAttributesDefinition[] = [
+        {
+          attributeName: "PersonID",
+          attributeKeyType: "PK",
+          attributeType: "int",
+          attributeComment: "NOT NULL"
+        },
+        {
+          attributeName: "LastName",
+          attributeType: "varchar255"
+        },
+        {
+          attributeName: "FirstName",
+          attributeType: "varchar255"
+        },
+        {
+          attributeName: "Address",
+          attributeType: "varchar255"
+        },
+        {
+          attributeName: "City",
+          attributeType: "varchar255"
+        }
+      ];
+      db.addAttributes(entityName,attributes);
+
+      entityName = "Orders";
+      db.addEntity(entityName);
+      attributes = [
+        {
+          attributeName: "OrderID",
+          attributeKeyType: "PK",
+          attributeType: "int",
+          attributeComment: "NOT NULL"
+        },
+        {
+          attributeName: "PersonID",
+          attributeKeyType: "FK",
+          attributeType: "int",
+          attributeComment: "NOT NULL"
+        }
+      ];
+      db.addAttributes(entityName,attributes);
+
+      const relSpec:DbRelSpec= {
+        cardA: "ZERO_OR_MORE",
+        cardB: "ONLY_ONE",
+        relType: "IDENTIFYING"
+      };
+
+      db.addRelationship("Persons", `[Persons.PersonId] to [${entityName}.PersonId]`, entityName, relSpec);
+      const ddlSyntax = new DbParser('sqlite', db).getSQLDataDefinition();
+      ```
+    * sql output
+      ```sql
+      CREATE TABLE "Persons" (
+        "City" varchar(255),
+        "Address" varchar(255),
+        "FirstName" varchar(255),
+        "LastName" varchar(255),
+        "PersonID" int NOT NULL,
+        PRIMARY KEY("PersonID")
+      );
+
+      CREATE TABLE "Orders" (
+        "PersonID" int NOT NULL,
+        "OrderID" int NOT NULL,
+        PRIMARY KEY("OrderID"),
+        FOREIGN KEY ("PersonId") REFERENCES "Persons"("PersonId")
+      );
+      ```
+
 ## Development
 
 1. git clone repo

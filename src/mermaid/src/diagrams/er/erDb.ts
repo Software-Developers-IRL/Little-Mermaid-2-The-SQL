@@ -4,6 +4,7 @@ import {
   DbEntityAttributesDefinition,
   DbEntityDefinition,
   DbRelationshipDefinition,
+  DbRelSpec,
 } from "../../../../types";
 // import mermaidAPI from '../../mermaidAPI';
 // import * as configApi from '../../../../../deps/mermaid/src/config'
@@ -69,7 +70,7 @@ const addRelationship = function (
   entA: string,
   rolA: string,
   entB: string,
-  rSpec: string
+  rSpec: DbRelSpec
 ) {
   const rel: DbRelationshipDefinition = {
     entityA: entA,
