@@ -16,6 +16,7 @@
       ```typescript
       import { GenerateSqlFromMermaid } from "@funktechno/little-mermaid-2-the-sql/lib/src/Library";
       import { MarkdownContentResponseI } from "@funktechno/little-mermaid-2-the-sql/lib/src/types";
+      import { DbEntityAttributesDefinition, DbRelSpec } from "@funktechno/little-mermaid-2-the-sql/lib/src/types";
 
       
       const markdownContent:MarkdownContentResponseI ={
