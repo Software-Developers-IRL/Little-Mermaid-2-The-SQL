@@ -1,6 +1,6 @@
 {
   "name": "@funktechno/little-mermaid-2-the-sql",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -32,6 +32,19 @@
     "type": "git",
     "url": "git+https://github.com/Software-Developers-IRL/Little-Mermaid-2-The-SQL.git"
   },
+  "keywords": [
+    "typescript",
+    "sql",
+    "mermaidjs",
+    "jison",
+    "sql-generator",
+    "diagram",
+    "UML",
+    "plugins",
+    "erdiagram",
+    "schemacrawler",
+    "sql-ddl"
+  ],
   "author": "",
   "license": "ISC",
   "bugs": {
