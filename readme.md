@@ -145,13 +145,13 @@
    1. postgres `npm run littleMermaid2SQL -- -d postgres --src samples/Adventureworks_pg.md`
    1. mysql `npm run littleMermaid2SQL -- -d mysql --src samples/Adventureworks_mysql.md`
 4. Force uninstall
-  * `npm uninstall -g little-mermaid-2-the-sql`
-  * `npm list -g`
-  * `littleMermaid2SQL --help`
-5. test package
-  * update .npmignore
-  * run `npm pack` unzip contents and verify, node_modules are not required b/c they will be installed with package.json
-  * `npm unpublish @funktechno/little-mermaid-2-the-sql@0.0.5` can only work within 1 week of publish, not very useful b/c not possible to republish an unpublished version
+    * `npm uninstall -g little-mermaid-2-the-sql`
+    * `npm list -g`
+    * `littleMermaid2SQL --help`
+5. test npm packaging
+    * update `.npmignore`
+    * run `npm pack` unzip contents and verify, node_modules are not required b/c they will be installed with package.json
+    * `npm unpublish @funktechno/little-mermaid-2-the-sql@0.0.5` can only work within 1 week of publish, not very useful b/c not possible to republish an unpublished version
 
 ### Technologies 
 * [esLint](https://eslint.org/)
