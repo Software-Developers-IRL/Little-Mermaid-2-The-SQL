@@ -1,0 +1,4 @@
+- name: Dependabot Auto Merge
+  uses: ahmadnassri/action-dependabot-auto-merge@v2.6.6
+  with:
+    github-token: ${{ secrets.mytoken }}
