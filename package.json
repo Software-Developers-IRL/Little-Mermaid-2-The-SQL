@@ -58,7 +58,7 @@
     "@types/lodash": "^4.14.185",
     "@types/mermaid": "^9.1.0",
     "@types/node": "^20.2.3",
-    "@typescript-eslint/eslint-plugin": "^5.40.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^5.37.0",
     "browserify": "^17.0.0",
     "dompurify": "3.0.4",
