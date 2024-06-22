@@ -1,11 +1,11 @@
 {
   "name": "@funktechno/little-mermaid-2-the-sql",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
   "engines": {
-    "node": "16.x"
+    "node": ">=16.x"
   },
   "bin": {
     "littleMermaid2SQL": "./lib/src/index.js"
